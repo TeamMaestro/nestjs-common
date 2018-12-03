@@ -1,0 +1,48 @@
+{
+    "name": "nestjs-common",
+    "version": "0.0.1",
+    "description": "Our common decorators, services, etc for NestJS projects",
+    "keywords": [
+        "Typescript"
+    ],
+    "main": "index.js",
+    "typings": "index.d.ts",
+    "author": "TeamHive",
+    "contributors": [
+        "John Pinkster <jpinkster>"
+    ],
+    "homepage": "https://github.com/TeamHive/nestjs-common",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TeamHive/nestjs-common.git"
+    },
+    "bugs": {
+        "url": "https://github.com/TeamHive/nestjs-common/issues"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "watch": "tsc -w",
+        "start": "tsc",
+        "prepublishOnly": "tsc",
+        "postpublish": "git push && git push --tags",
+        "prepack": "tsc",
+        "postpack": "rm *.d.ts && rm *.js"
+    },
+    "dependencies": {
+        "@nestjs/common": "^5.4.1",
+        "@nestjs/core": "^5.4.1",
+        "@nestjs/testing": "^5.4.1",
+        "class-transformer": "^0.2.0",
+        "config": "^3.0.0",
+        "js-yaml": "^3.12.0",
+        "log4js": "^3.0.6",
+        "raven": "^2.6.4",
+        "reflect-metadata": "^0.1.12",
+        "rxjs": "^6.3.3"
+    },
+    "devDependencies": {
+        "@types/config": "0.0.34",
+        "tslint": "^5.11.0",
+        "typescript": "^3.1.6"
+    }
+}
