@@ -1,5 +1,5 @@
 {
-    "name": "nestjs-common",
+    "name": "@teamhive/nestjs-common",
     "version": "0.0.1",
     "description": "Our common decorators, services, etc for NestJS projects",
     "keywords": [
@@ -11,6 +11,7 @@
     "contributors": [
         "John Pinkster <jpinkster>"
     ],
+    "license": "ISC",
     "homepage": "https://github.com/TeamHive/nestjs-common",
     "repository": {
         "type": "git",
@@ -26,23 +27,46 @@
         "prepublishOnly": "tsc",
         "postpublish": "git push && git push --tags",
         "prepack": "tsc",
-        "postpack": "rm *.d.ts && rm *.js"
+        "postpack": "rm *.d.ts && rm *.js && rm -Rf modules"
     },
-    "dependencies": {
-        "@nestjs/common": "^5.4.1",
-        "@nestjs/core": "^5.4.1",
-        "@nestjs/testing": "^5.4.1",
-        "class-transformer": "^0.2.0",
-        "config": "^3.0.0",
-        "js-yaml": "^3.12.0",
-        "log4js": "^3.0.6",
-        "raven": "^2.6.4",
-        "reflect-metadata": "^0.1.12",
-        "rxjs": "^6.3.3"
+    "peerDependencies": {
+        "@nestjs/common": "^5.0",
+        "@nestjs/core": "^5.0",
+        "@nestjs/testing": "^5.0",
+        "@types/config": "^0.0",
+        "@types/passport": "~0.4.0",
+        "@types/raven": "^2.0",
+        "class-validator": "~0.9.0",
+        "config": "^3.0",
+        "js-yaml": "^3.0",
+        "log4js": "^3.0",
+        "passport": "~0.4.0",
+        "raven": "^2.0",
+        "reflect-metadata": "~0.1.0",
+        "rxjs": "^6.0"
     },
     "devDependencies": {
-        "@types/config": "0.0.34",
-        "tslint": "^5.11.0",
-        "typescript": "^3.1.6"
+        "@nestjs/common": "^5.0",
+        "@nestjs/core": "^5.0",
+        "@nestjs/testing": "^5.0",
+        "@types/bluebird": "^3.5.24",
+        "@types/config": "^0.0",
+        "@types/passport": "~0.4.0",
+        "@types/raven": "^2.0",
+        "@types/redis": "^2.0",
+        "class-validator": "~0.9.0",
+        "config": "^3.0",
+        "js-yaml": "^3.0",
+        "log4js": "^3.0",
+        "passport": "~0.4.0",
+        "raven": "^2.0",
+        "redis": "^2.0",
+        "reflect-metadata": "~0.1.0",
+        "rxjs": "^6.0",
+        "tslint": "^5.0",
+        "typescript": "^3.0"
+    },
+    "dependencies": {
+        "bluebird": "^3.5.3"
     }
 }
