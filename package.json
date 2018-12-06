@@ -1,9 +1,11 @@
 {
     "name": "@teamhive/nestjs-common",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Our common decorators, services, etc for NestJS projects",
     "keywords": [
-        "Typescript"
+        "Typescript",
+        "NestJS",
+        "Seed"
     ],
     "main": "index.js",
     "typings": "index.d.ts",
