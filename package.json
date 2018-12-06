@@ -28,7 +28,6 @@
         "start": "tsc",
         "prepublishOnly": "tsc",
         "postpublish": "git push && git push --tags",
-        "prepack": "tsc",
         "postpack": "rm *.d.ts && rm *.js && rm -Rf modules"
     },
     "peerDependencies": {
