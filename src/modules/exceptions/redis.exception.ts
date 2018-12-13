@@ -1,5 +1,4 @@
 import { HttpStatus } from '@nestjs/common';
-
 import { LoggedException } from './logged.exception';
 
 export class RedisException extends LoggedException {

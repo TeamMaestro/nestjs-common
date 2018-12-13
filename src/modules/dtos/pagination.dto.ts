@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsIn } from 'class-validator';
+import { IsIn, IsOptional, IsString } from 'class-validator';
 import { PaginationOptions, SortDirection } from '../interfaces';
 import { IsNumber } from '../validators';
 

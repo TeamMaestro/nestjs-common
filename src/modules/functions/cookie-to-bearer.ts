@@ -4,7 +4,7 @@ import * as express from 'express';
 export function CookieToBearer(req: express.Request, res: express.Response, next: express.NextFunction) {
     let cookieName: string;
     try {
-        cookieName = config.get<string>('session.accessCookie.name');
+        cookieName = config.get<string>('authentication.session.accessCookie.name');
     }
     catch (error) {
         // tslint:disable-next-line:no-console

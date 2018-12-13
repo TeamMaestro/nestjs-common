@@ -1,6 +1,5 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { ErrorHandler } from '../services/error-handler/error-handler.service';
 

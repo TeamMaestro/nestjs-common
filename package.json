@@ -33,6 +33,7 @@
     "peerDependencies": {
         "@nestjs/common": "^5.0",
         "@nestjs/core": "^5.0",
+        "@nestjs/passport": "^5.0",
         "@nestjs/testing": "^5.0",
         "@types/config": "^0.0",
         "@types/passport": "~0.4.0",
@@ -49,6 +50,7 @@
     "devDependencies": {
         "@nestjs/common": "^5.0",
         "@nestjs/core": "^5.0",
+        "@nestjs/passport": "^5.0",
         "@nestjs/testing": "^5.0",
         "@types/bluebird": "^3.5.24",
         "@types/config": "^0.0",

@@ -1,5 +1,5 @@
-import * as log from 'log4js';
 import * as config from 'config';
+import * as log from 'log4js';
 import { ApplicationTokens } from '../../application-tokens.const';
 
 export const LoggerProvider = {

@@ -1,9 +1,8 @@
-import * as Raven from 'raven';
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Logger } from 'log4js';
-
-import { Breadcrum } from '../../interfaces/breadcrum.interface';
+import * as Raven from 'raven';
 import { ApplicationTokens } from '../../application-tokens.const';
+import { Breadcrum } from '../../interfaces/breadcrum.interface';
 
 @Injectable()
 export class ErrorHandler {
