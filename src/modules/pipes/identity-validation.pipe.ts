@@ -1,6 +1,5 @@
-import { PipeTransform, Injectable } from '@nestjs/common';
+import { Injectable, PipeTransform } from '@nestjs/common';
 import { Validator } from 'class-validator';
-
 import { ValidationException } from '../exceptions';
 
 @Injectable()

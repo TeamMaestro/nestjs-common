@@ -1,6 +1,6 @@
+import * as bluebird from 'bluebird';
 import * as config from 'config';
 import * as redis from 'redis';
-import * as bluebird from 'bluebird';
 import { ApplicationTokens } from '../../application-tokens.const';
 
 bluebird.promisifyAll(redis.RedisClient.prototype);

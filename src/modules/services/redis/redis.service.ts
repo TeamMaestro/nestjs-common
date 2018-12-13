@@ -1,6 +1,6 @@
-import * as redis from 'redis';
+import { Inject, Injectable } from '@nestjs/common';
 import * as log4js from 'log4js';
-import { Injectable, Inject } from '@nestjs/common';
+import * as redis from 'redis';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { RedisException } from '../../exceptions/redis.exception';
 
