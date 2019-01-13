@@ -140,9 +140,12 @@ export class UserFetchAllPgDto extends Pagination {
 
 ### Guards
 #### PassportAuthGuard
-This guard extends the @nestjs/passport AuthGuard and provides a better error handling pattern. You will want to extend this class for any custom guards in your application and override the handleErrors method to report any non-whitelisted errors. You can also customize the whitelisted errors with the addToWhitelist and removeFromWhitelist methods.
-
+This guard extends the @nestjs/passport AuthGuard and provides a better error handling pattern. You will want to extend this class for any custom guards in your application and override the handleErrors method to report any non-whitelisted errors. You can also customize the whitelisted errors with the addToWhitelist and removeFromWhitelist methods. By default, this will throw an UnauthorizedException, but you can change that functionality by overriding the throwException method.
 ```
+eimport { AuthGuard } from '@nestjs/passport';
+import { UnauthorizedException } from '../exceptions';
+import { PassportWhitelistedErrors } from '../enums';
+
 export function PassportAuthGuard(strategyToken: string) {
     return class Guard extends AuthGuard(strategyToken) {
         whitelistedErrors: Set<string>;
@@ -167,7 +170,7 @@ export function PassportAuthGuard(strategyToken: string) {
                     }
                 }
 
-                throw new UnauthorizedException();
+                this.throwException();
             }
 
             return user;
@@ -185,6 +188,10 @@ export function PassportAuthGuard(strategyToken: string) {
         handleErrors(error: Error) {
             console.warn('Override the handleErrors method in the child class of PassportAuthGuard to report errors!');
             console.error(error);
+        }
+
+        throwException() {
+            throw new UnauthorizedException();
         }
 
         addToWhitelist(messages: string[]) {

@@ -26,7 +26,7 @@ export function PassportAuthGuard(strategyToken: string) {
                     }
                 }
 
-                throw new UnauthorizedException();
+                this.throwException();
             }
 
             return user;
@@ -44,6 +44,10 @@ export function PassportAuthGuard(strategyToken: string) {
         handleErrors(error: Error) {
             console.warn('Override the handleErrors method in the child class of PassportAuthGuard to report errors!');
             console.error(error);
+        }
+
+        throwException() {
+            throw new UnauthorizedException();
         }
 
         addToWhitelist(messages: string[]) {
