@@ -1,4 +1,5 @@
 export * from './application-tokens.const';
+export * from './classes';
 export * from './decorators';
 export * from './dtos';
 export * from './enums';
