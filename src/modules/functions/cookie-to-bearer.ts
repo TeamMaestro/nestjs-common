@@ -8,7 +8,7 @@ export function CookieToBearer(req: express.Request, res: express.Response, next
     }
     catch (error) {
         // tslint:disable-next-line:no-console
-        console.warn('You need to create a config for session.accessCookie.name. See the README in @teamhive/nestjs-common');
+        console.warn('You need to create a config for authentication.session.accessCookie.name. See the README in @teamhive/nestjs-common');
         cookieName = 'access_token';
     }
 

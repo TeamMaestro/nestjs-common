@@ -48,3 +48,4 @@ Desktop.ini
 *.tgz
 tsconfig.json
 tslint.json
+.git
