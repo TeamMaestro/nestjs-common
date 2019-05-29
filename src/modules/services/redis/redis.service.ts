@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import * as log4js from 'log4js';
 import * as redis from 'redis';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { RedisException } from '../../exceptions/redis.exception';
+import { ErrorHandler } from '../error-handler';
 
 @Injectable()
 export class RedisService {
@@ -10,13 +10,14 @@ export class RedisService {
         @Inject(ApplicationTokens.RedisClientToken)
         private readonly client: redis.RedisClient,
 
-        @Inject(ApplicationTokens.LoggerToken)
-        private readonly logger: log4js.Logger,
+        @Inject()
+        private readonly logger: ErrorHandler
     ) {
         // tslint:disable
-        this.client.on('error', (err) => this.logger.error('Error:', err));
-        this.client.on('ready', () => this.logger.info('Connected to Redis'));
-        this.client.on('reconnecting', () => this.logger.info('Attempting to reconnect to Redis...'));
+        this.client.on('error', (err) => this.logger.captureException(err));
+        this.client.on('ready', () => this.logger.captureMessage('Connected to Redis'));
+        this.client.on('reconnecting', () => this.logger.captureMessage('Attempting to reconnect to Redis...'));
+        this.client.on('end', () => this.logger.captureException(new RedisException(new Error('Redis Connection Fatal'))))
         // tslint:enable
     }
 
