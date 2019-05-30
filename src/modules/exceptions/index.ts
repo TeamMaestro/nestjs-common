@@ -10,3 +10,5 @@ export * from './redis.exception';
 export * from './sql.exception';
 export * from './unauthorized.exception';
 export * from './validation.exception';
+export * from './uncaught.exception';
+export * from './unhandled-promise.exception';
