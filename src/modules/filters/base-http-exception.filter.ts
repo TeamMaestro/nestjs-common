@@ -4,7 +4,8 @@ export class BaseHttpExceptionFilter {
         while (true) {
             if (initialException.error &&
                 initialException.error.status &&
-                initialException.error.message
+                initialException.error.message &&
+                initialException.error.getStatus
             ) {
                 initialException = initialException.error;
             }
