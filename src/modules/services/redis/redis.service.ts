@@ -1,29 +1,28 @@
 import { Inject, Injectable } from '@nestjs/common';
-import * as redis from 'redis';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { RedisException } from '../../exceptions/redis.exception';
 import { ErrorHandler } from '../error-handler';
+import { RedisClient } from '../../providers';
 
 @Injectable()
 export class RedisService {
     constructor(
         @Inject(ApplicationTokens.RedisClientToken)
-        private readonly client: redis.RedisClient,
+        private readonly client: RedisClient,
 
-        @Inject()
-        private readonly logger: ErrorHandler
+        private readonly errorHandler: ErrorHandler
     ) {
         // tslint:disable
-        this.client.on('error', (err) => this.logger.captureException(err));
-        this.client.on('ready', () => this.logger.captureMessage('Connected to Redis'));
-        this.client.on('reconnecting', () => this.logger.captureMessage('Attempting to reconnect to Redis...'));
-        this.client.on('end', () => this.logger.captureException(new RedisException(new Error('Redis Connection Fatal'))))
+        this.client.on('error', (error) => this.errorHandler.captureException(new RedisException(error)));
+        this.client.on('ready', () => this.errorHandler.captureBreadcrumb({ message: 'Connected to Redis' }));
+        this.client.on('reconnecting', () => this.errorHandler.captureBreadcrumb({ message: 'Attempting to reconnect to Redis...' }));
+        this.client.on('end', () => this.errorHandler.captureException(new RedisException(new Error('Redis Connection Fatal'))))
         // tslint:enable
     }
 
     getValue(key: string) {
         return new Promise<any>((resolve, reject) => {
-            this.client.get(key, async (error, response) => {
+            this.client.connection.get(key, async (error, response) => {
                 if (error) {
                     return reject(error);
                 }
@@ -44,7 +43,7 @@ export class RedisService {
     setValue(key: string, value: any, duration?: number) {
         return new Promise<any>((resolve, reject) => {
             if (duration) {
-                this.client.set(key, JSON.stringify(value), 'EX', duration, (err, response) => {
+                this.client.connection.set(key, JSON.stringify(value), 'EX', duration, (err, response) => {
                     if (err) {
                         return reject(err);
                     }
@@ -52,7 +51,7 @@ export class RedisService {
                 });
             }
             else {
-                this.client.set(key, JSON.stringify(value), (err, response) => {
+                this.client.connection.set(key, JSON.stringify(value), (err, response) => {
                     if (err) {
                         return reject(err);
                     }
@@ -64,7 +63,7 @@ export class RedisService {
 
     async delete(key: string) {
         try {
-            await this.client.del(key);
+            await this.client.connection.del(key);
         }
         catch (error) {
             throw new RedisException(error);
