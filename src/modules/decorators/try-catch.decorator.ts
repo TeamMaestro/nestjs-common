@@ -1,22 +1,6 @@
-import * as config from 'config';
-import * as log from 'log4js';
 import { TryCatchOptions } from '../interfaces/try-catch-options.interface';
 import { TryCatchException } from '../interfaces';
-import { ErrorHandler } from '../services';
-
-// jank logger
-let level: string;
-try {
-    level = config.get('logger.level');
-}
-catch (error) {
-    level = 'debug';
-}
-const logger = log.getLogger();
-logger.level = level;
-
-// jank error handler
-const errorHandler = new ErrorHandler(logger);
+import { TryCatchEmitter } from '../classes';
 
 export function TryCatch(options = {} as TryCatchOptions) {
 
@@ -44,7 +28,7 @@ export function TryCatch(options = {} as TryCatchOptions) {
 
         // if handler passed in capture the exception, otherwise throw it
         if (handleOnly) {
-            errorHandler.captureException(exception || error);
+            TryCatchEmitter.emit(exception || error);
         }
         else {
             throw exception || error;
@@ -58,7 +42,7 @@ export function TryCatch(options = {} as TryCatchOptions) {
 
         // check if original methods is async to determine if decorator should be async
         if (originalMethod.constructor.name === 'AsyncFunction') {
-            descriptor.value = async function(...args) {
+            descriptor.value = async function(...args: any[]) {
                 // try catch the original method passing in args it was called with
                 try {
                     return await originalMethod.apply(this, args);
@@ -69,7 +53,7 @@ export function TryCatch(options = {} as TryCatchOptions) {
             };
         }
         else {
-            descriptor.value = function (...args) {
+            descriptor.value = function(...args: any[]) {
                 // try catch the original method passing in args it was called with
                 try {
                     return originalMethod.apply(this, args);
