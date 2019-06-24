@@ -67,14 +67,28 @@ redis:
 
 ### Decorators
 There are a few different decorators that we have made available:
-#### @TryCatch(error: Error, options?: { customResponseMessage: string } )
+#### @TryCatch(error: Error, options?: { exception: TryCatchException, handleOnly: boolean, customResponseMessage: string } )
 This decorator will wrap your whole function into a try/catch and you can pass an optional custom error class for it to throw!
+If you only want to handle the error and not throw an excxeption, you can pass in `handleOnly: true`. When using this option, it
+will emit an event with the error through the TryCatchEmitter, which you should use to listen and handle these errors in your
+application.
 
 ```
-    @TryCatch(SqlException)
+    @TryCatch({ exception: SqlException })
     async fetchAll() {
         return await this.usersRepository.fetchAll()
     }
+
+    OR
+
+    // some service
+    @TryCatch({ handleOnly: true })
+    async fetchAll() {
+        return await this.usersRepository.fetchAll()
+    }
+
+    // main file, right after bootstrap of application **caught error will be handled here**
+    TryCatchEmitter.listen((error) => errorHandler.captureException(error));
 ```
 
 #### @QueryUser()

@@ -28,6 +28,7 @@ export function TryCatch(options = {} as TryCatchOptions) {
 
         // if handler passed in capture the exception, otherwise throw it
         if (handleOnly) {
+            // emit for app to subscribe to and handle
             TryCatchEmitter.emit(exception || error);
         }
         else {
