@@ -32,7 +32,7 @@
     },
     "peerDependencies": {
         "@nestjs/common": "^6.5",
-        "@nestjs/core": "^6.5",
+        "@nestjs/core": "^5.7",
         "@nestjs/passport": "^6.1",
         "@nestjs/testing": "^6.5",
         "@types/config": "^0.0",
@@ -49,7 +49,7 @@
     },
     "devDependencies": {
         "@nestjs/common": "^6.5",
-        "@nestjs/core": "^6.5",
+        "@nestjs/core": "^5.7",
         "@nestjs/passport": "^5.1.0",
         "@nestjs/testing": "^6.5",
         "@types/bluebird": "^3.5.27",
