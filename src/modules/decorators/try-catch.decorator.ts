@@ -2,7 +2,17 @@ import { TryCatchOptions } from '../interfaces/try-catch-options.interface';
 import { TryCatchException } from '../interfaces';
 import { TryCatchEmitter } from '../classes';
 
-export function TryCatch(options = {} as TryCatchOptions) {
+export function TryCatch(optionsOrException = {} as TryCatchOptions | TryCatchException, options = {} as TryCatchOptions) {
+    // set exception based off of type of first param
+    let exception: TryCatchException;
+    // set options equal to optionsOrException if that param is an object
+    const firstParamOptions = optionsOrException as TryCatchOptions;
+    if (firstParamOptions.customResponseMessage || firstParamOptions.customResponseMessage || firstParamOptions.handleOnly !== undefined) {
+        options = firstParamOptions;
+    }
+    else {
+        exception = optionsOrException as TryCatchException;
+    }
 
     // helper function to pass appropriate arguments to exception
     const getException = (error: any, Exception: TryCatchException) => {
@@ -20,10 +30,14 @@ export function TryCatch(options = {} as TryCatchOptions) {
     };
 
     const catchError = (error: any, handleOnly: boolean) => {
-        // get exception instance if there is an exception option
-        let exception: TryCatchException;
-        if (options.exception) {
-            exception = getException(error, options.exception);
+        // get exception instance if there is an exception passed in
+        if (exception) {
+            exception = getException(error, exception);
+        }
+
+        // wrap the error if wrapper passed
+        if (firstParamOptions.errorWrapperClass) {
+            error = new firstParamOptions.errorWrapperClass(error);
         }
 
         // if handler passed in capture the exception, otherwise throw it
@@ -37,7 +51,7 @@ export function TryCatch(options = {} as TryCatchOptions) {
     };
 
     // return the decorator function
-    return (target, key, descriptor) => {
+    return (_target: any, _key: any, descriptor: any) => {
         // store original method
         const originalMethod = descriptor.value;
 
