@@ -67,28 +67,45 @@ redis:
 
 ### Decorators
 There are a few different decorators that we have made available:
-#### @TryCatch(error: Error, options?: { exception: TryCatchException, handleOnly: boolean, customResponseMessage: string } )
+#### @TryCatch(optionsOrException = {} as TryCatchOptions | TryCatchException, options = {} as TryCatchOptions )
 This decorator will wrap your whole function into a try/catch and you can pass an optional custom error class for it to throw!
 If you only want to handle the error and not throw an excxeption, you can pass in `handleOnly: true`. When using this option, it
 will emit an event with the error through the TryCatchEmitter, which you should use to listen and handle these errors in your
-application.
+application. If you want to sanitize the error itself, like in case of taking unecessary propereties off of it, you can pass in
+a class that accepts an error as a parameter to `errorWrapperClass`.
 
 ```
-    @TryCatch({ exception: SqlException })
+    // Main file, right after bootstrap of application **caught error will be handled here**
+    TryCatchEmitter.listen((error) => errorHandler.captureException(error));
+
+    // Options interface
+    interface TryCatchOptions {
+        handleOnly?: boolean;
+        customResponseMessage?: string;
+        errorWrapperClass?: { new (param1: Error) };
+    }
+
+    // Only pass in exception (this will throw an SqlException)
+    @TryCatch(SqlException)
     async fetchAll() {
         return await this.usersRepository.fetchAll()
     }
 
     OR
 
-    // some service
-    @TryCatch({ handleOnly: true })
+    // Only pass in options (this will not throw but only report the SqlExceptionError)
+    @TryCatch({ handleOnly: true, errorWrapperClass: SqlExceptionError })
     async fetchAll() {
         return await this.usersRepository.fetchAll()
     }
 
-    // main file, right after bootstrap of application **caught error will be handled here**
-    TryCatchEmitter.listen((error) => errorHandler.captureException(error));
+    OR
+
+    // Pass in exception with options
+    @TryCatch(SqlException, { customResponseMessage: 'error creating content' })
+    async fetchAll() {
+        return await this.usersRepository.fetchAll()
+    }
 ```
 
 #### @QueryUser()
