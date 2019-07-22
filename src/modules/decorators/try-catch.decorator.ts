@@ -30,14 +30,14 @@ export function TryCatch(optionsOrException = {} as TryCatchOptions | TryCatchEx
     };
 
     const catchError = (error: any, handleOnly: boolean) => {
-        // get exception instance if there is an exception passed in
-        if (exception) {
-            exception = getException(error, exception);
-        }
-
         // wrap the error if wrapper passed
         if (firstParamOptions.errorWrapperClass) {
             error = new firstParamOptions.errorWrapperClass(error);
+        }
+
+        // get exception instance if there is an exception passed in
+        if (exception) {
+            exception = getException(error, exception);
         }
 
         // if handler passed in capture the exception, otherwise throw it
