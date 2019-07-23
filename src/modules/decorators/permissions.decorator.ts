@@ -1,3 +1,3 @@
-import { ReflectMetadata } from '@nestjs/common';
+import { SetMetadata } from '@nestjs/common';
 
-export const Permissions = <T>(...permissions: T[]) => ReflectMetadata('permissions', permissions);
+export const Permissions = <T>(...permissions: T[]) => SetMetadata('permissions', permissions);
