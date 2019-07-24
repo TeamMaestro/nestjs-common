@@ -8,5 +8,6 @@ export * from './passive.exception';
 export * from './redirect.exception';
 export * from './redis.exception';
 export * from './sql.exception';
+export * from './sso.exception';
 export * from './unauthorized.exception';
 export * from './validation.exception';
