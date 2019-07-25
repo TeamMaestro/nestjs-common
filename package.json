@@ -58,7 +58,6 @@
         "js-yaml": "^3.13",
         "log4js": "^4.5",
         "passport": "~0.4.0",
-        "redis": "^2.8",
         "reflect-metadata": "~0.1.13",
         "rxjs": "^6.5",
         "tslint": "^5.18",
@@ -66,6 +65,7 @@
     },
     "dependencies": {
         "bluebird": "^3.5.5",
-        "raven": "^2.6"
+        "raven": "^2.6",
+        "redis": "^2.8"
     }
 }
