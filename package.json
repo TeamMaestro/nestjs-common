@@ -35,22 +35,18 @@
         "@nestjs/core": "^6.5",
         "@nestjs/passport": "^6.1",
         "@nestjs/testing": "^6.5",
-        "@types/config": "^0.0",
-        "@types/passport": "~1.0.0",
-        "@types/raven": "^2.5",
         "class-validator": "~0.9.1",
         "config": "^3.2",
         "js-yaml": "^3.13",
         "log4js": "^4.5",
         "passport": "~0.4.0",
-        "raven": "^2.6",
         "reflect-metadata": "~0.1.13",
         "rxjs": "^6.5"
     },
     "devDependencies": {
         "@nestjs/common": "^6.5",
         "@nestjs/core": "^6.5",
-        "@nestjs/passport": "^5.1.0",
+        "@nestjs/passport": "^6.1",
         "@nestjs/testing": "^6.5",
         "@types/bluebird": "^3.5.27",
         "@types/config": "^0.0",
@@ -62,7 +58,6 @@
         "js-yaml": "^3.13",
         "log4js": "^4.5",
         "passport": "~0.4.0",
-        "raven": "^2.6",
         "redis": "^2.8",
         "reflect-metadata": "~0.1.13",
         "rxjs": "^6.5",
@@ -70,6 +65,7 @@
         "typescript": "^3.5"
     },
     "dependencies": {
-        "bluebird": "^3.5.5"
+        "bluebird": "^3.5.5",
+        "raven": "^2.6"
     }
 }
