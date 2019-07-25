@@ -1,6 +1,6 @@
 {
     "name": "@teamhive/nestjs-common",
-    "version": "5.0.1",
+    "version": "5.1.0",
     "description": "Our common decorators, services, etc for NestJS projects",
     "keywords": [
         "Typescript",
