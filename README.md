@@ -68,7 +68,8 @@ redis:
 ### Decorators
 There are a few different decorators that we have made available:
 #### @TryCatch(error: Error, options?: { customResponseMessage: string } )
-This decorator will wrap your whole function into a try/catch and you can pass an optional custom error class for it to throw!
+This decorator will wrap your whole function into a try/catch and you can pass an optional custom error class for it to throw!  Errors that are thrown
+that extend this package's BaseException are not re-wrapped.
 
 ```
     @TryCatch(SqlException)
