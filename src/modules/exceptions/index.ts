@@ -5,6 +5,7 @@ export * from './document-service.exception';
 export * from './logged.exception';
 export * from './not-found.exception';
 export * from './passive.exception';
+export * from './processing.exception';
 export * from './redirect.exception';
 export * from './redis.exception';
 export * from './sql.exception';
