@@ -1,3 +1,4 @@
+import { BaseException } from '../exceptions';
 import { TryCatchException } from '../interfaces/try-catch-exception.interface';
 import { TryCatchOptions } from '../interfaces/try-catch-options.interface';
 
@@ -5,6 +6,9 @@ export function TryCatch(Exception: TryCatchException, options = {} as TryCatchO
 
     // helper function to pass appropriate arguments to exception
     const throwCorrectExceptionStyle = (error) => {
+        if (error instanceof BaseException) {
+            throw error;
+        }
         if (new Exception(error).error) {
             if (options.customResponseMessage) {
                 throw new Exception(error, options.customResponseMessage);
@@ -25,7 +29,7 @@ export function TryCatch(Exception: TryCatchException, options = {} as TryCatchO
 
         // check if original methods is async to determine if decorator should be async
         if (originalMethod.constructor.name === 'AsyncFunction') {
-            descriptor.value = async function(...args) {
+            descriptor.value = async function (...args) {
                 // try catch the original method passing in args it was called with
                 try {
                     return await originalMethod.apply(this, args);
@@ -36,7 +40,7 @@ export function TryCatch(Exception: TryCatchException, options = {} as TryCatchO
             };
         }
         else {
-            descriptor.value = function(...args) {
+            descriptor.value = function (...args) {
                 // try catch the original method passing in args it was called with
                 try {
                     return originalMethod.apply(this, args);
