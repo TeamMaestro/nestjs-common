@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { RedisException } from '../../exceptions/redis.exception';
-import { ErrorHandler } from '../error-handler';
 import { RedisClient } from '../../providers';
+import { ErrorHandler } from '../error-handler';
 
 @Injectable()
 export class RedisService {
@@ -61,7 +61,7 @@ export class RedisService {
         });
     }
 
-    async delete(key: string) {
+    async delete(key: string | string[]) {
         try {
             await this.client.connection.del(key);
         }
