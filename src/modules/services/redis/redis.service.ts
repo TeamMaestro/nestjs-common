@@ -32,7 +32,7 @@ export class RedisService {
 
     getValue(key: string) {
         return new Promise<any>((resolve, reject) => {
-            this.client.connection.get(this.keyPrefix + key, async (error, response) => {
+            this.client.connection.get(`${this.keyPrefix}${key}`, async (error, response) => {
                 if (error) {
                     return reject(error);
                 }
@@ -53,7 +53,7 @@ export class RedisService {
     setValue(key: string, value: any, duration?: number) {
         return new Promise<any>((resolve, reject) => {
             if (duration) {
-                this.client.connection.set(this.keyPrefix + key, JSON.stringify(value), 'EX', duration, (err, response) => {
+                this.client.connection.set(`${this.keyPrefix}${key}`, JSON.stringify(value), 'EX', duration, (err, response) => {
                     if (err) {
                         return reject(err);
                     }
@@ -61,7 +61,7 @@ export class RedisService {
                 });
             }
             else {
-                this.client.connection.set(this.keyPrefix + key, JSON.stringify(value), (err, response) => {
+                this.client.connection.set(`${this.keyPrefix}${key}`, JSON.stringify(value), (err, response) => {
                     if (err) {
                         return reject(err);
                     }
@@ -73,10 +73,10 @@ export class RedisService {
 
     async delete(key: string | string[]) {
         if (Array.isArray(key)) {
-            key.map(individualKey => this.keyPrefix + individualKey);
+            key = key.map(individualKey => this.keyPrefix + individualKey);
         }
         else {
-            key = this.keyPrefix + key;
+            key = `${this.keyPrefix}${key}`;
         }
         try {
             await this.client.connection.del(key);
