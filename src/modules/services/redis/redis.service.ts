@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import * as config from 'config';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { RedisException } from '../../exceptions/redis.exception';
 import { RedisClient } from '../../providers';
@@ -6,6 +7,8 @@ import { ErrorHandler } from '../error-handler';
 
 @Injectable()
 export class RedisService {
+    private keyPrefix: string;
+
     constructor(
         @Inject(ApplicationTokens.RedisClientToken)
         private readonly client: RedisClient,
@@ -18,11 +21,18 @@ export class RedisService {
         this.client.on('reconnecting', () => this.errorHandler.captureBreadcrumb({ message: 'Attempting to reconnect to Redis...' }));
         this.client.on('end', () => this.errorHandler.captureException(new RedisException(new Error('Redis Connection Fatal'))))
         // tslint:enable
+
+        try {
+            this.keyPrefix = config.get<string>('redis.keyPrefix');
+        }
+        catch (error) {
+            this.keyPrefix = '';
+        }
     }
 
     getValue(key: string) {
         return new Promise<any>((resolve, reject) => {
-            this.client.connection.get(key, async (error, response) => {
+            this.client.connection.get(this.keyPrefix + key, async (error, response) => {
                 if (error) {
                     return reject(error);
                 }
@@ -43,7 +53,7 @@ export class RedisService {
     setValue(key: string, value: any, duration?: number) {
         return new Promise<any>((resolve, reject) => {
             if (duration) {
-                this.client.connection.set(key, JSON.stringify(value), 'EX', duration, (err, response) => {
+                this.client.connection.set(this.keyPrefix + key, JSON.stringify(value), 'EX', duration, (err, response) => {
                     if (err) {
                         return reject(err);
                     }
@@ -51,7 +61,7 @@ export class RedisService {
                 });
             }
             else {
-                this.client.connection.set(key, JSON.stringify(value), (err, response) => {
+                this.client.connection.set(this.keyPrefix + key, JSON.stringify(value), (err, response) => {
                     if (err) {
                         return reject(err);
                     }
@@ -62,6 +72,12 @@ export class RedisService {
     }
 
     async delete(key: string | string[]) {
+        if (Array.isArray(key)) {
+            key.map(individualKey => this.keyPrefix + individualKey);
+        }
+        else {
+            key = this.keyPrefix + key;
+        }
         try {
             await this.client.connection.del(key);
         }
