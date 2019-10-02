@@ -97,7 +97,7 @@ This decorator will pull out the req.user object and make them available in the 
 ```
 
 #### @Permissions()
-This decorator will typically be used in tandom with the PermissionsGuard so that you can ensure the route is protected based on certain permissions
+This decorator will typically be used in tandem with the PermissionsGuard so that you can ensure the route is protected based on certain permissions
 
 ```
     @Permissions('CONTENT_VIEW')
@@ -108,6 +108,70 @@ This decorator will typically be used in tandom with the PermissionsGuard so tha
 
         return new ContentFetchAllAndCount(content);
     }
+```
+
+
+#### @InjectMetadata()
+This decorator will inject metadata into an object on the the request.
+
+```typescript
+@Get()
+async fetchAll(
+    @InjectMetadata('query', injectUser) assignmentPgDto: AdminDto
+) {
+    const assignments = await this.adminAssignmentService.fetchAll(assignmentPgDto);
+    return findAndCountAllResponse(assignments, AdminAssignmentFetchAllResponse);
+}
+```
+
+In the example above, the user can be injected into the request's query so the Dto has access to all of that data while being built automatically by Nest.
+
+The decorator accepts the following arguments:
+```typescript
+    (reqProperty?: string, ...injectFunctions: (req, paramTarget, paramProperty, paramIndex) => object)[]
+```
+where `reqProperty` is the name of the property on the request to inject data into and the `injectFunctions` are functions that given the request and the decorator data for the decorated method return an object to be merged into the metadata for the request property's value.
+
+##### Recommend Usage
+
+In your project, it is recommend that you create an `InjectableMetadata` interface that defines all of the possible metadata that could be injected into request property.
+These should match up with the keys that the inject functions return their data on.  Below is an example of what that might look like.
+
+```typescript
+export const injectUser = (req) => ({ user: req.user });
+
+export const injectIsAdmin = (_req, target) => (
+    { isAdmin: Reflect.getMetadata('isAdmin', target.constructor) }
+);
+
+export interface InjectableMetadata {
+    user: AuthenticatedUser;
+    isAdmin: boolean;
+}
+```
+
+To access this data in your DTO, you should redefine the InjectedDto type provided by this library and use your InjectableMetadata interface.
+
+```typescript
+import { InjectedDto as CommonInjectedDto } from '@teamhive/nestjs-common';
+import { InjectableMetadata } from './injectable-metadata';
+
+export type InjectedDto<DtoType, PickedFields extends keyof InjectableMetadata> = CommonInjectedDto<DtoType, InjectableMetadata, PickedFields>;
+```
+
+Then in the DTO, use this as the type of the argument that is passed into the constructor.  All of the injected metadata can then be found and
+appropriately typed on the `INJECTED_METADATA_KEY`.
+
+```typescript
+import { INJECTED_METADATA_KEY } from '@teamhive/nestjs-common';
+import { InjectedDto } from '../../common';
+
+export class AdminDto {
+
+    constructor(options: InjectedDto<PaginationOptions, 'user' | 'isAdmin'>) {
+        const { user, isAdmin: adminMode } = options[INJECTED_METADATA_KEY];
+    }
+}
 ```
 
 ### Data Transfer Objects (Dtos)
