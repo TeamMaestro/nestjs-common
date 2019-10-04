@@ -4,7 +4,7 @@ import { ApplicationTokens } from '../../application-tokens.const';
 
 export const LoggerProvider = {
     provide: ApplicationTokens.LoggerToken,
-    useFactory: async () => {
+    useFactory: () => {
         let level: string;
         try {
             level = config.get('logger.level');
@@ -15,7 +15,7 @@ export const LoggerProvider = {
             level = 'debug';
         }
         const logger = log.getLogger();
-        logger.level =  level;
+        logger.level = level;
 
         return logger;
     },
