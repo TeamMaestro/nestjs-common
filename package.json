@@ -59,7 +59,7 @@
         "log4js": "^4.5",
         "passport": "~0.4.0",
         "reflect-metadata": "~0.1.13",
-        "rxjs": "^6.5",
+        "rxjs": "^6.4",
         "tslint": "^5.18",
         "typescript": "^3.5"
     },
