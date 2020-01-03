@@ -34,8 +34,8 @@ export class Pagination {
     constructor(defaultSortBy: string, options: PaginationOptions) {
         this.defaultSort = defaultSortBy;
 
-        this.page = options.page || 0;
-        this.size = options.size || 10;
+        this.page = +options.page || 0;
+        this.size = +options.size || 10;
         this.sortBy = options.sortBy || defaultSortBy;
         this.sortDir = options.sortDir || 'DESC';
 
