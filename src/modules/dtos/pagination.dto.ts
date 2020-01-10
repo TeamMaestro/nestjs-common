@@ -1,35 +1,34 @@
 import { IsIn, IsOptional, IsString } from 'class-validator';
-import { PaginationOptions, SortDirection } from '../interfaces';
+import { HiveApiModelProperty } from '../decorators';
+import { SortDirection } from '../enums/sort-direction.enum';
+import { PaginationOptions } from '../interfaces';
 import { IsNumber } from '../validators';
 
 export class Pagination {
+    @HiveApiModelProperty(`The number of page to fetch`)
     @IsNumber()
     @IsOptional()
     page: number;
 
+    @HiveApiModelProperty(`The number of results to fetch`)
     @IsNumber()
     @IsOptional()
     size: number;
 
-    offset: number;
-
-    sortByModel: any;
-
+    @HiveApiModelProperty(`Property to sort by`)
     @IsString()
     @IsOptional()
     sortBy: string;
 
+    @HiveApiModelProperty(`sort direction: ${Object.values(SortDirection)}`)
     @IsString()
     @IsOptional()
-    @IsIn(['ASC', 'DESC'])
+    @IsIn(Object.values(SortDirection))
     sortDir: SortDirection;
 
-    @IsString()
-    @IsOptional()
+    offset: number;
+    sortByModel: any;
     defaultSort: string;
-
-    @IsOptional()
-    search: any;
 
     constructor(defaultSortBy: string, options: PaginationOptions) {
         this.defaultSort = defaultSortBy;
@@ -37,7 +36,7 @@ export class Pagination {
         this.page = +options.page || 0;
         this.size = +options.size || 10;
         this.sortBy = options.sortBy || defaultSortBy;
-        this.sortDir = options.sortDir || 'DESC';
+        this.sortDir = options.sortDir || SortDirection.DESC;
 
         this.offset = this.page * this.size;
     }

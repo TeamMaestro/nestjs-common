@@ -1,0 +1,13 @@
+{
+    "files.exclude": {
+        "dist/**": true
+    },
+    "typescript.extension.sortImports.sortOnSave": true,
+    "typescript.extension.sortImports.sortMethod": "path",
+    "typescript.extension.sortImports.pathSortOrder": ["package", "relativeDownLevel", "relativeUpLevel"],
+    "typescript.extension.sortImports.maxNamedImportsInSingleLine": 6,
+    "cSpell.words": [
+        "breadcrum",
+        "nestjs"
+    ]
+}
