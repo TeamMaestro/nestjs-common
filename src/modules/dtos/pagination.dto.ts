@@ -24,7 +24,7 @@ export class Pagination {
     @IsString()
     @IsOptional()
     @IsIn(Object.values(SortDirection))
-    sortDir: SortDirection;
+    sortDir: 'ASC' | 'DESC';
 
     offset: number;
     sortByModel: any;
