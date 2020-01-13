@@ -1,4 +1,4 @@
-import { SortDirection } from '../enums/sort-direction.enum';
+import { SortDirection } from '../types';
 
 export interface PaginationOptions {
     page?: number;

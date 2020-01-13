@@ -11,4 +11,5 @@ export * from './interfaces';
 export * from './pipes';
 export * from './providers';
 export * from './services';
+export * from './types';
 export * from './validators';

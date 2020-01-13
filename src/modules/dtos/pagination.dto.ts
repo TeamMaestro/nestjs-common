@@ -1,7 +1,7 @@
 import { IsIn, IsOptional, IsString } from 'class-validator';
 import { HiveApiModelProperty } from '../decorators';
-import { SortDirection } from '../enums/sort-direction.enum';
 import { PaginationOptions } from '../interfaces';
+import { SortDirection } from '../types';
 import { IsNumber } from '../validators';
 
 export class Pagination {
@@ -20,11 +20,11 @@ export class Pagination {
     @IsOptional()
     sortBy: string;
 
-    @HiveApiModelProperty(`sort direction: ${Object.values(SortDirection)}`)
+    @HiveApiModelProperty(`sort direction: ASC, DESC`)
     @IsString()
     @IsOptional()
-    @IsIn(Object.values(SortDirection))
-    sortDir: 'ASC' | 'DESC';
+    @IsIn(['ASC', 'DESC'])
+    sortDir: SortDirection;
 
     offset: number;
     sortByModel: any;
@@ -36,7 +36,7 @@ export class Pagination {
         this.page = +options.page || 0;
         this.size = +options.size || 10;
         this.sortBy = options.sortBy || defaultSortBy;
-        this.sortDir = options.sortDir || SortDirection.DESC;
+        this.sortDir = options.sortDir || 'DESC';
 
         this.offset = this.page * this.size;
     }
@@ -52,7 +52,8 @@ export class Pagination {
         }
 
         if (options.sortById !== false) {
-            sortBy.push(['id', 'asc']);
+            const sortByKey = options.sortBy || 'id';
+            sortBy.push([sortByKey, 'asc']);
         }
 
         return sortBy;
@@ -60,5 +61,6 @@ export class Pagination {
 }
 
 interface OrderBy {
-    sortById: boolean;
+    sortById?: boolean;
+    sortBy?: string;
 }
