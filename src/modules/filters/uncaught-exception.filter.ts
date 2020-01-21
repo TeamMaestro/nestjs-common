@@ -19,11 +19,6 @@ export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements 
         // get the original exception if it was caught more than once
         exception = this.getInitialException(exception);
 
-        // use 405 instead of 403 do to cloudfront's handling of forbidden
-        if (exception.status === HttpStatus.FORBIDDEN) {
-            exception.status = HttpStatus.METHOD_NOT_ALLOWED;
-        }
-
         const statusCode = exception.status || 500;
 
         // Handle Stack Traces
