@@ -1,3 +1,5 @@
+import { HttpStatus } from '@nestjs/common';
+
 export class BaseHttpExceptionFilter {
     getInitialException(exception: any) {
         let initialException = exception;
@@ -12,6 +14,11 @@ export class BaseHttpExceptionFilter {
             else {
                 break;
             }
+        }
+
+        // use 405 instead of 403 do to cloud front's handling of forbidden
+        if (initialException.status === HttpStatus.FORBIDDEN) {
+            initialException.status = HttpStatus.METHOD_NOT_ALLOWED;
         }
 
         return initialException;
