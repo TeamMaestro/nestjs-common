@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { ErrorHandler } from '../services/error-handler/error-handler.service';
 
-const ignoredHttpStatuses = [HttpStatus.NOT_FOUND];
+const ignoredHttpStatuses = [HttpStatus.NOT_FOUND, HttpStatus.FORBIDDEN, HttpStatus.METHOD_NOT_ALLOWED];
 
 @Catch(Error)
 export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
