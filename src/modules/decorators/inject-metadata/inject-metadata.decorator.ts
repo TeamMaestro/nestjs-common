@@ -1,7 +1,7 @@
-import { createParamDecorator } from '@nestjs/common';
+import { Body, createParamDecorator, Query } from '@nestjs/common';
+import { DO_NOT_VALIDATE } from '../../constants';
 
 export const INJECTED_METADATA_KEY = Symbol('INJECTED METADATA KEY');
-
 /**
  * This parameter decorator will pull the given property off of the request and inject the the results of the
  * injectFunctions on to the key [INJECTED_METADATA_KEY].  This constructed object is then the first parameter for when
@@ -14,6 +14,12 @@ export const InjectMetadata = (reqProperty?: string, ...injectFunctions: (
 ) => {
     // return the a custom decorator
     return (target, property, index) => {
+        if (reqProperty === 'body') {
+            Body(DO_NOT_VALIDATE)(target, property, index);
+        }
+        else if (reqProperty === 'query') {
+            Query(DO_NOT_VALIDATE)(target, property, index);
+        }
         // create a nest parameter decorator that will have access to the request object
         createParamDecorator((data, req): any => {
             // pull the requested value off of the request

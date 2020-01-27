@@ -1,13 +1,18 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { validate, ValidationError } from 'class-validator';
+import { DO_NOT_VALIDATE } from '../constants';
 import { ValidationException } from '../exceptions';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
 
     async transform(value, metadata: ArgumentMetadata) {
-        const { metatype } = metadata;
+        const { metatype, data } = metadata;
         if (!metatype || !this.toValidate(metatype)) {
+            return value;
+        }
+        // if the parameter is an injected metadata parameter
+        if (data === DO_NOT_VALIDATE) {
             return value;
         }
         // Construct the class with the value
