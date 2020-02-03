@@ -12,7 +12,8 @@ export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {
         // Add ApiOperation Decorator
         ApiOperation({
             summary: options.summary,
-            description: options.description
+            description: options.description,
+            deprecated: options.deprecated || false
         })(target, propertyKey, descriptor);
 
         // Add ApiResponse Decorator
