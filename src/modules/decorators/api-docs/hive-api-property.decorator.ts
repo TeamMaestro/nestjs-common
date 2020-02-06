@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { SwaggerEnumType } from '@nestjs/swagger/dist/types/swagger-enum.type';
 import { ValidationTypes } from 'class-validator';
-import { getValidation } from '../../utilities';
+import { getValidation } from '../../functions/get-validation.function';
 
 export function HiveApiModelProperty(description: string, metadata: {
     example?: any,
