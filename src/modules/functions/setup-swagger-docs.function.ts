@@ -3,7 +3,7 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { writeJson } from './write-json.function';
 
-export async function setupSwaggerDocs(app: INestApplication, applicationName = 'API') {
+export async function setupSwaggerDocs(app: INestApplication, outputDirectory = process.cwd(), applicationName = 'API') {
     // Setup Swagger Documents
     const options = new DocumentBuilder()
         .setTitle(applicationName)
@@ -16,7 +16,7 @@ export async function setupSwaggerDocs(app: INestApplication, applicationName = 
     fixOperationIds(document);
 
     // Write the Json to directory
-    await writeJson(join(process.cwd(), 'openApi.json'), JSON.stringify(document));
+    await writeJson(join(outputDirectory, 'openApi.json'), JSON.stringify(document));
 }
 
 function fixOperationIds(document: OpenAPIObject): OpenAPIObject {
