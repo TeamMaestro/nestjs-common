@@ -1,7 +1,7 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { validate, ValidationError } from 'class-validator';
+import { validate } from 'class-validator';
 import { DO_NOT_VALIDATE } from '../constants';
-import { ValidationException } from '../exceptions';
+import { throwValidationErrors } from '../utility';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
@@ -19,7 +19,7 @@ export class ValidationPipe implements PipeTransform<any> {
         const object = new metatype(value);
         const errors = await validate(object);
         if (errors.length > 0) {
-            this.getError(errors);
+            throwValidationErrors(errors);
         }
 
         // We will return the constructed class
@@ -29,20 +29,5 @@ export class ValidationPipe implements PipeTransform<any> {
     private toValidate(metatype): boolean {
         const types = [String, Boolean, Number, Array, Object];
         return !types.find((type) => metatype === type);
-    }
-
-    private getError(errors: ValidationError[]) {
-        const constraints = errors[0].constraints;
-        const children = errors[0].children;
-        if (constraints) {
-            const message = constraints[Object.keys(constraints)[0]];
-            throw new ValidationException(message);
-        }
-        else if (children) {
-            this.getError(children);
-        }
-        else {
-            throw new ValidationException('Validation Failed');
-        }
     }
 }
