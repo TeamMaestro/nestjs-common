@@ -9,7 +9,7 @@ export const throwValidationErrors = (errors: ValidationError[]) => {
         throw new ValidationException(message);
     }
     else if (children) {
-        this.getError(children);
+        throwValidationErrors(children);
     }
     else {
         throw new ValidationException('Validation Failed');
