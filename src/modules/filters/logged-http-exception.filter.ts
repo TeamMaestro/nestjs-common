@@ -24,10 +24,13 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
         }
 
         const statusCode = exception.getStatus() || 500;
-        res.status(statusCode).json({
+        const exceptionResponse = {
             statusCode,
             appCode: HttpStatus[statusCode],
-            message: exception.getResponse()
-        });
+            message: exception.getResponse(),
+            ...exception.customResponse
+        };
+
+        res.status(statusCode).json(exceptionResponse);
     }
 }

@@ -34,10 +34,13 @@ export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements 
             message = 'There was an internal server error';
         }
 
-        res.status(statusCode).json({
+        const exceptionResponse = {
             statusCode,
             appCode: HttpStatus[statusCode],
-            message
-        });
+            message,
+            ...exception.customResponse
+        };
+
+        res.status(statusCode).json(exceptionResponse);
     }
 }

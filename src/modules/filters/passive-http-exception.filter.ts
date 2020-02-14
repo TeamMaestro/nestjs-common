@@ -12,10 +12,13 @@ export class PassiveHttpExceptionFilter extends BaseHttpExceptionFilter implemen
         exception = this.getInitialException(exception);
 
         const statusCode = exception.getStatus() || 500;
-        res.status(statusCode).json({
+        const exceptionResponse = {
             statusCode,
             appCode: HttpStatus[statusCode],
-            message: exception.getResponse()
-        });
+            message: exception.getResponse(),
+            ...exception.customResponse
+        };
+
+        res.status(statusCode).json(exceptionResponse);
     }
 }
