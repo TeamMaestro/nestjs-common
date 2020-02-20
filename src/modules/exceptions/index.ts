@@ -3,6 +3,7 @@ export * from './bad-request.exception';
 export * from './base.exception';
 export * from './conflict.exception';
 export * from './document-service.exception';
+export * from './forbidden.exception';
 export * from './logged.exception';
 export * from './not-found.exception';
 export * from './passive.exception';
