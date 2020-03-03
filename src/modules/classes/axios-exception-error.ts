@@ -16,7 +16,8 @@ export class AxiosExceptionError extends Error {
                     response: {
                         status: error.response.status,
                         statusText: error.response.statusText,
-                        headers: error.response.headers
+                        headers: error.response.headers,
+                        data: error.response.data
                     }
                 };
             }
