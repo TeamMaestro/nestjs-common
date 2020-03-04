@@ -33,9 +33,13 @@ export class Pagination {
     constructor(defaultSortBy: string, options: PaginationOptions) {
         this.defaultSort = defaultSortBy;
 
-        if (Number(options.size) !== 0) {
-            this.page = +options.page || 0;
-            this.size = +options.size || 10;
+        options.page = (options.page === undefined) ? 0 : +options.page;
+        options.size = (options.size === undefined) ? 10 : +options.size;
+
+        // If size or page is -1, then leave these undefined
+        if (Number(options.size) !== -1 && Number(options.page) !== -1) {
+            this.page = options.page;
+            this.size = options.size;
             this.offset = this.page * this.size;
         }
         this.sortBy = options.sortBy || defaultSortBy;
