@@ -33,12 +33,13 @@ export class Pagination {
     constructor(defaultSortBy: string, options: PaginationOptions) {
         this.defaultSort = defaultSortBy;
 
-        this.page = +options.page || 0;
-        this.size = +options.size || 10;
+        if (Number(options.size) !== 0) {
+            this.page = +options.page || 0;
+            this.size = +options.size || 10;
+            this.offset = this.page * this.size;
+        }
         this.sortBy = options.sortBy || defaultSortBy;
         this.sortDir = options.sortDir || 'DESC';
-
-        this.offset = this.page * this.size;
     }
 
     getOrderBy(options = {} as OrderBy) {
