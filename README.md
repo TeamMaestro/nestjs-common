@@ -178,6 +178,8 @@ export class AdminDto {
 #### Pagination
 This class is our standard that we use for pagination requests. You will want to extend this class for your custom pagination classes
 
+_Note: If your application tends to sort by 'ASC', in your main.ts set the static property `defaultSortDir = 'ASC'`_
+
 ```
 export class UserFetchAllPgDto extends Pagination {
     @IsOptional()

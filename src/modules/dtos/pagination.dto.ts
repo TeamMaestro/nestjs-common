@@ -30,6 +30,8 @@ export class Pagination {
     sortByModel: any;
     defaultSort: string;
 
+    static defaultSortDir: SortDirection = 'DESC';
+
     constructor(defaultSortBy: string, options: PaginationOptions) {
         this.defaultSort = defaultSortBy;
 
@@ -43,7 +45,7 @@ export class Pagination {
             this.offset = this.page * this.size;
         }
         this.sortBy = options.sortBy || defaultSortBy;
-        this.sortDir = options.sortDir || 'DESC';
+        this.sortDir = options.sortDir || Pagination.defaultSortDir;
     }
 
     getOrderBy(options = {} as OrderBy) {
