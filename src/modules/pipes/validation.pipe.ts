@@ -1,6 +1,6 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { validate } from 'class-validator';
-import { ValidatedObject } from '../classes';
+import { ConstructedObject } from '../classes';
 import { DO_NOT_VALIDATE } from '../constants';
 import { throwValidationErrors } from '../utility';
 
@@ -9,9 +9,6 @@ export class ValidationPipe implements PipeTransform<any> {
 
     async transform(value, metadata: ArgumentMetadata) {
         const { metatype, data, } = metadata;
-        if (value instanceof ValidatedObject) {
-            return value.object;
-        }
         if (!metatype || !this.toValidate(metatype)) {
             return value;
         }
@@ -19,8 +16,8 @@ export class ValidationPipe implements PipeTransform<any> {
         if (data === DO_NOT_VALIDATE) {
             return value;
         }
-        // Construct the class with the value
-        const object = new metatype(value);
+        // Construct the class with the value if has not already been constructed
+        const object = value instanceof ConstructedObject ? value.object : new metatype(value);
         const errors = await validate(object);
         if (errors.length > 0) {
             throwValidationErrors(errors);
