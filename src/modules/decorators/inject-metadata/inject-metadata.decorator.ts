@@ -1,4 +1,4 @@
-import { Body, createParamDecorator, Query } from '@nestjs/common';
+import { Body, createParamDecorator, ExecutionContext, Query } from '@nestjs/common';
 import { DO_NOT_VALIDATE } from '../../constants';
 
 export const INJECTED_METADATA_KEY = Symbol('INJECTED METADATA KEY');
@@ -21,7 +21,8 @@ export const InjectMetadata = (reqProperty?: string, ...injectFunctions: (
             Query(DO_NOT_VALIDATE)(target, property, index);
         }
         // create a nest parameter decorator that will have access to the request object
-        createParamDecorator((data, req): any => {
+        createParamDecorator((data, ctx: ExecutionContext): any => {
+            const req = ctx.switchToHttp().getRequest();
             // pull the requested value off of the request
             let reqValue;
             if (!reqProperty || typeof req[reqProperty] !== 'object') {
@@ -36,7 +37,7 @@ export const InjectMetadata = (reqProperty?: string, ...injectFunctions: (
             const [paramTarget, paramProperty, paramIndex] = data;
             let injectedMetadata = {};
             injectFunctions.forEach((fn) => {
-                injectedMetadata = Object.assign(injectedMetadata, fn(req, paramTarget, paramProperty, paramIndex));
+                injectedMetadata = Object.assign(injectedMetadata, fn(ctx, paramTarget, paramProperty, paramIndex));
             });
             return {
                 ...reqValue,

@@ -1,5 +1,6 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { validate } from 'class-validator';
+import { ValidatedObject } from '../classes';
 import { DO_NOT_VALIDATE } from '../constants';
 import { throwValidationErrors } from '../utility';
 
@@ -7,7 +8,10 @@ import { throwValidationErrors } from '../utility';
 export class ValidationPipe implements PipeTransform<any> {
 
     async transform(value, metadata: ArgumentMetadata) {
-        const { metatype, data } = metadata;
+        const { metatype, data, } = metadata;
+        if (value instanceof ValidatedObject) {
+            return value.object;
+        }
         if (!metatype || !this.toValidate(metatype)) {
             return value;
         }
