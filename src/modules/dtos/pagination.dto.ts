@@ -39,7 +39,7 @@ export class Pagination {
         options.size = (options.size === undefined) ? 10 : +options.size;
 
         // If size or page is -1, then leave these undefined
-        if (Number(options.size) !== -1 && Number(options.page) !== -1) {
+        if (Number(options.size) >= 0 && Number(options.page) >= 0) {
             this.page = options.page;
             this.size = options.size;
             this.offset = this.page * this.size;
