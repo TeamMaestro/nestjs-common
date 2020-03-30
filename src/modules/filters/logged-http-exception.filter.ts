@@ -13,24 +13,30 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
     }
 
     catch(exception: LoggedException, host: ArgumentsHost) {
-        const res: Response = host.switchToHttp().getResponse();
-
         // get the original exception if it was caught more than once
         exception = this.getInitialException(exception);
 
-        // Handle Stack Traces
+        // handle stack traces
         if (exception.error) {
             this.errorHandler.captureException(exception.error);
         }
 
-        const statusCode = exception.getStatus() || 500;
-        const exceptionResponse = {
-            statusCode,
-            appCode: HttpStatus[statusCode],
-            message: exception.getResponse(),
-            ...exception.customResponse
-        };
+        // determine the context type
+        const contextType = this.getHostContextType(host);
 
-        res.status(statusCode).json(exceptionResponse);
+        // if http, then form response
+        if (contextType === 'http') {
+            const res: Response = host.switchToHttp().getResponse();
+
+            const statusCode = exception.getStatus() || 500;
+            const exceptionResponse = {
+                statusCode,
+                appCode: HttpStatus[statusCode],
+                message: exception.getResponse(),
+                ...exception.customResponse
+            };
+
+            res.status(statusCode).json(exceptionResponse);
+        }
     }
 }

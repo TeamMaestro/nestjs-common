@@ -14,33 +14,39 @@ export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements 
     }
 
     catch(exception: any, host: ArgumentsHost) {
-        const res: Response = host.switchToHttp().getResponse();
-
         // get the original exception if it was caught more than once
         exception = this.getInitialException(exception);
 
-        const statusCode = exception.status || 500;
-
-        // Handle Stack Traces
+        // handle stack traces
         if (ignoredHttpStatuses.indexOf(exception.status) === -1) {
             this.errorHandler.captureException(exception);
         }
 
-        let message;
-        if (exception.message) {
-            message = exception.message.error || exception.message;
-        }
-        else {
-            message = 'There was an internal server error';
-        }
+        // determine the context type
+        const contextType = this.getHostContextType(host);
 
-        const exceptionResponse = {
-            statusCode,
-            appCode: HttpStatus[statusCode],
-            message,
-            ...exception.customResponse
-        };
+        // if http, then form response
+        if (contextType === 'http') {
+            const res: Response = host.switchToHttp().getResponse();
 
-        res.status(statusCode).json(exceptionResponse);
+            const statusCode = exception.status || 500;
+
+            let message;
+            if (exception.message) {
+                message = exception.message.error || exception.message;
+            }
+            else {
+                message = 'There was an internal server error';
+            }
+
+            const exceptionResponse = {
+                statusCode,
+                appCode: HttpStatus[statusCode],
+                message,
+                ...exception.customResponse
+            };
+
+            res.status(statusCode).json(exceptionResponse);
+        }
     }
 }

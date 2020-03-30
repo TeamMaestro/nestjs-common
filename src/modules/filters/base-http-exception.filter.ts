@@ -1,4 +1,5 @@
-import { HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, ContextType, HttpStatus } from '@nestjs/common';
+import * as express from 'express';
 
 export class BaseHttpExceptionFilter {
     getInitialException(exception: any) {
@@ -22,5 +23,17 @@ export class BaseHttpExceptionFilter {
         }
 
         return initialException;
+    }
+
+    /**
+     * check for fields on response specific to http to determine context type
+     * @param host
+     */
+    getHostContextType(host: ArgumentsHost): ContextType {
+        const res: express.Response = host.switchToHttp().getResponse();
+        if (res.req && res.status && typeof res.status === 'function') {
+            return 'http';
+        }
+        return 'rpc';
     }
 }
