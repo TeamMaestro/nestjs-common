@@ -23,17 +23,13 @@ export const InjectMetadata = (reqProperty?: string, ...injectFunctions: (
         // create a nest parameter decorator that will have access to the request object
         createParamDecorator((data, ctx: ExecutionContext): any => {
             const req = ctx.switchToHttp().getRequest();
-            // pull the requested value off of the request
-            let reqValue;
+            // if property is not a object, return that value
             if (!reqProperty || typeof req[reqProperty] !== 'object') {
-                reqValue = undefined;
-            }
-            else {
-                reqValue = req[reqProperty];
+                return req[reqProperty];
             }
 
             // inject request and parameter data into the inject functions and merge their results
-
+            const reqValue = req[reqProperty];
             const [paramTarget, paramProperty, paramIndex] = data;
             let injectedMetadata = {};
             injectFunctions.forEach((fn) => {
