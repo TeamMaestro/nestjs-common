@@ -1,8 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import * as config from 'config';
-import * as redis from 'redis';
 import * as EventEmitter from 'events';
+import * as redis from 'redis';
 import { ApplicationTokens } from '../../application-tokens.const';
 
+@Injectable()
 export class RedisClient extends EventEmitter {
     connection: redis.RedisClient;
 
@@ -100,5 +102,5 @@ export class RedisClient extends EventEmitter {
 
 export const RedisProvider = {
     provide: ApplicationTokens.RedisClientToken,
-    useValue: new RedisClient()
+    useClass: RedisClient
 };
