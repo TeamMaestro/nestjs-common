@@ -10,9 +10,7 @@ export async function setupSwaggerDocs(app: INestApplication, outputDirectory = 
         .setDescription(`Documentation for ${applicationName}`)
         .addBearerAuth()
         .build();
-    const document = SwaggerModule.createDocument(app, options, {
-        exploreQueryParameters: true
-    });
+    const document = SwaggerModule.createDocument(app, options);
 
     // Fix operationIds for proper navigation
     fixOperationIds(document);
