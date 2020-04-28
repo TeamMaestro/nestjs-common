@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { SwaggerEnumType } from '@nestjs/swagger/dist/types/swagger-enum.type';
+import { ApiProperty } from '@teamhive/nestjs-swagger';
+import { SwaggerEnumType } from '@teamhive/nestjs-swagger/dist/types/swagger-enum.type';
 import { ValidationTypes } from 'class-validator';
 import { getValidation } from '../../functions/get-validation.function';
 

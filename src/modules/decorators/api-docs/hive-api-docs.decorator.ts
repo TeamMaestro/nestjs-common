@@ -1,7 +1,7 @@
 import { HttpCode } from '@nestjs/common';
 import { METHOD_METADATA } from '@nestjs/common/constants';
 import { RequestMethod } from '@nestjs/common/enums/request-method.enum';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOperation, ApiResponse } from '@teamhive/nestjs-swagger';
 import { HiveApiDocConfig } from '../../interfaces';
 
 export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {

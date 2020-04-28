@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@teamhive/nestjs-swagger';
 import { join } from 'path';
 import { writeJson } from './write-json.function';
 
@@ -10,7 +10,9 @@ export async function setupSwaggerDocs(app: INestApplication, outputDirectory = 
         .setDescription(`Documentation for ${applicationName}`)
         .addBearerAuth()
         .build();
-    const document = SwaggerModule.createDocument(app, options);
+    const document = SwaggerModule.createDocument(app, options, {
+        exploreQueryParameters: true
+    });
 
     // Fix operationIds for proper navigation
     fixOperationIds(document);
