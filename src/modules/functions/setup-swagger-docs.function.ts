@@ -13,16 +13,16 @@ export async function setupSwaggerDocs(app: INestApplication, outputDirectory = 
     const document = SwaggerModule.createDocument(app, options);
 
     // Fix operationIds for proper navigation
-    fixOperationIds(document);
+    processDocument(document);
 
     // Write the Json to directory
     await writeJson(join(outputDirectory, 'openApi.json'), JSON.stringify(document));
 }
 
-function fixOperationIds(document: OpenAPIObject): OpenAPIObject {
+function processDocument(document: OpenAPIObject): OpenAPIObject {
     // Available methods we need to update operationIds
     const methods = ['get', 'put', 'post', 'delete'];
-
+    const tags = new Set<string>();
     // Go through document paths and methods to prepend the tag (name of controller)
     if (document && document.paths) {
         const paths = Object.keys(document.paths);
@@ -32,6 +32,7 @@ function fixOperationIds(document: OpenAPIObject): OpenAPIObject {
                     const operationId = document.paths[path][method].operationId;
                     if (document.paths[path][method].tags && document.paths[path][method].tags.length > 0) {
                         let tag = document.paths[path][method].tags[0];
+                        tags.add(tag);
                         if (tag && tag.length > 0) {
                             tag = tag.replace(/\s/g, '');
                         }
@@ -41,6 +42,14 @@ function fixOperationIds(document: OpenAPIObject): OpenAPIObject {
             }
         }
     }
+    const sortedTags = Array.from(tags).sort((strA, strB) => {
+        const strANoAdmin = strA.replace('Admin - ', '');
+        const strBNoAdmin = strB.replace('Admin - ', '');
+        return strANoAdmin.localeCompare(strBNoAdmin, 'en');
+    }).map(tagName => ({
+         name: tagName
+    }));
+    document.tags = sortedTags;
 
     return document;
 }
