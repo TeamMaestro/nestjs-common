@@ -1,5 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { empty } from 'rxjs';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { PassiveException } from '../exceptions/passive.exception';
 
@@ -25,6 +26,9 @@ export class PassiveHttpExceptionFilter extends BaseHttpExceptionFilter implemen
             };
 
             res.status(statusCode).json(exceptionResponse);
+        }
+        else {
+            return empty();
         }
     }
 }

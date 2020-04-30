@@ -1,9 +1,9 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { empty } from 'rxjs';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { LoggedException } from '../exceptions/logged.exception';
 import { ErrorHandler } from '../services/error-handler/error-handler.service';
-
 @Catch(LoggedException)
 export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
     constructor(
@@ -14,11 +14,13 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
 
     catch(exception: LoggedException, host: ArgumentsHost) {
         // get the original exception if it was caught more than once
-        exception = this.getInitialException(exception);
+        exception = this.getInitialException(exception) as LoggedException;
 
         // handle stack traces
         if (exception.error) {
             this.errorHandler.captureException(exception.error);
+        } else {
+            this.errorHandler.captureException(exception);
         }
 
         // determine the context type
@@ -37,6 +39,10 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
             };
 
             res.status(statusCode).json(exceptionResponse);
+        }
+        // if rpc, return an empty observeable
+        else {
+            return empty();
         }
     }
 }

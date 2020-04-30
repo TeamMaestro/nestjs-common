@@ -1,11 +1,12 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { empty } from 'rxjs';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { ErrorHandler } from '../services/error-handler/error-handler.service';
 
 const ignoredHttpStatuses = [HttpStatus.NOT_FOUND, HttpStatus.FORBIDDEN, HttpStatus.METHOD_NOT_ALLOWED];
 
-@Catch(Error)
+@Catch()
 export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
     constructor(
         private readonly errorHandler: ErrorHandler
@@ -47,6 +48,9 @@ export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements 
             };
 
             res.status(statusCode).json(exceptionResponse);
+        }
+        else {
+            return empty();
         }
     }
 }
