@@ -1,9 +1,9 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { empty } from 'rxjs';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { LoggedException } from '../exceptions/logged.exception';
 import { ErrorHandler } from '../services/error-handler/error-handler.service';
-
 @Catch(LoggedException)
 export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
     constructor(
@@ -13,24 +13,36 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
     }
 
     catch(exception: LoggedException, host: ArgumentsHost) {
-        const res: Response = host.switchToHttp().getResponse();
-
         // get the original exception if it was caught more than once
-        exception = this.getInitialException(exception);
+        exception = this.getInitialException(exception) as LoggedException;
 
-        // Handle Stack Traces
+        // handle stack traces
         if (exception.error) {
             this.errorHandler.captureException(exception.error);
+        } else {
+            this.errorHandler.captureException(exception);
         }
 
-        const statusCode = exception.getStatus() || 500;
-        const exceptionResponse = {
-            statusCode,
-            appCode: HttpStatus[statusCode],
-            message: exception.getResponse(),
-            ...exception.customResponse
-        };
+        // determine the context type
+        const contextType = this.getHostContextType(host);
 
-        res.status(statusCode).json(exceptionResponse);
+        // if http, then form response
+        if (contextType === 'http') {
+            const res: Response = host.switchToHttp().getResponse();
+
+            const statusCode = exception.getStatus() || 500;
+            const exceptionResponse = {
+                statusCode,
+                appCode: HttpStatus[statusCode],
+                message: exception.getResponse(),
+                ...exception.customResponse
+            };
+
+            res.status(statusCode).json(exceptionResponse);
+        }
+        // if rpc, return an empty observeable
+        else {
+            return empty();
+        }
     }
 }

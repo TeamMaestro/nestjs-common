@@ -1,11 +1,12 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { empty } from 'rxjs';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { ErrorHandler } from '../services/error-handler/error-handler.service';
 
 const ignoredHttpStatuses = [HttpStatus.NOT_FOUND, HttpStatus.FORBIDDEN, HttpStatus.METHOD_NOT_ALLOWED];
 
-@Catch(Error)
+@Catch()
 export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
     constructor(
         private readonly errorHandler: ErrorHandler
@@ -14,33 +15,42 @@ export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements 
     }
 
     catch(exception: any, host: ArgumentsHost) {
-        const res: Response = host.switchToHttp().getResponse();
-
         // get the original exception if it was caught more than once
         exception = this.getInitialException(exception);
 
-        const statusCode = exception.status || 500;
-
-        // Handle Stack Traces
+        // handle stack traces
         if (ignoredHttpStatuses.indexOf(exception.status) === -1) {
             this.errorHandler.captureException(exception);
         }
 
-        let message;
-        if (exception.message) {
-            message = exception.message.error || exception.message;
+        // determine the context type
+        const contextType = this.getHostContextType(host);
+
+        // if http, then form response
+        if (contextType === 'http') {
+            const res: Response = host.switchToHttp().getResponse();
+
+            const statusCode = exception.status || 500;
+
+            let message;
+            if (exception.message) {
+                message = exception.message.error || exception.message;
+            }
+            else {
+                message = 'There was an internal server error';
+            }
+
+            const exceptionResponse = {
+                statusCode,
+                appCode: HttpStatus[statusCode],
+                message,
+                ...exception.customResponse
+            };
+
+            res.status(statusCode).json(exceptionResponse);
         }
         else {
-            message = 'There was an internal server error';
+            return empty();
         }
-
-        const exceptionResponse = {
-            statusCode,
-            appCode: HttpStatus[statusCode],
-            message,
-            ...exception.customResponse
-        };
-
-        res.status(statusCode).json(exceptionResponse);
     }
 }

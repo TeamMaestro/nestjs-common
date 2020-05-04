@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
-import { PassiveException } from './passive.exception';
+import { LoggedException } from './logged.exception';
 
-export class ValidationException extends PassiveException {
+export class ValidationException extends LoggedException {
     constructor(message?: string) {
         super(
             message || 'Request format is invalid',
