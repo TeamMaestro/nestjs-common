@@ -8,6 +8,11 @@
     "typescript.extension.sortImports.maxNamedImportsInSingleLine": 6,
     "cSpell.words": [
         "breadcrum",
-        "nestjs"
+        "metatype",
+        "microservices",
+        "nestjs",
+        "postpack",
+        "postpublish",
+        "teamhive"
     ]
 }

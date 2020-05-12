@@ -1,5 +1,5 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import { Validator } from 'class-validator';
+import { isArray, isUUID } from 'class-validator';
 import { ValidationException } from '../exceptions';
 
 @Injectable()
@@ -8,12 +8,11 @@ export class IdentityArrayValidationPipe implements PipeTransform<string[]> {
         if (!values) {
             throw new ValidationException('array of identities is not defined');
         }
-        const validator = new Validator();
-        if (!validator.isArray(values)) {
+        if (!isArray(values)) {
             throw new ValidationException('invalid array');
         }
         values.forEach((value) => {
-            if (!validator.isUUID(value)) {
+            if (!isUUID(value)) {
                 throw new ValidationException('invalid uuid list of identities');
             }
         });

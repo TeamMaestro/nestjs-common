@@ -32,7 +32,7 @@ export class RedisClient extends EventEmitter {
             };
         }
 
-        // create the intial client connection
+        // create the initial client connection
         this.connection = this.setupClient();
         // start pinging redis
         this.pingRedis();
@@ -40,7 +40,7 @@ export class RedisClient extends EventEmitter {
 
     /**
      * 1. Create the new client
-     * 2. Set the retry_startegy to destroy this connection and create a new one if
+     * 2. Set the retry_strategy to destroy this connection and create a new one if
      *    can't connect for 10 seconds
      * 3. Subscribe and emit the new connection's events
      * 4. Return the client
@@ -64,7 +64,7 @@ export class RedisClient extends EventEmitter {
             },
 
             // default enable_offline_queue to false so that any requests made while client
-            // is trying to reconnect are immeditelly sent an error, instead of waiting for
+            // is trying to reconnect are immediately sent an error, instead of waiting for
             // reconnect and holding up the response to the end user
             enable_offline_queue: false,
             ...this.redisConfig
