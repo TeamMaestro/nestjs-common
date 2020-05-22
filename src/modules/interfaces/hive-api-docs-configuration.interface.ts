@@ -6,4 +6,8 @@ export interface HiveApiDocConfig {
         status: number,
         type?: any
     };
+    headers?: {
+        name: string;
+        description: string;
+    }[];
 }

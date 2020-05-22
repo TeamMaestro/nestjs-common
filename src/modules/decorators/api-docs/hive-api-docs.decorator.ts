@@ -1,7 +1,15 @@
 import { HttpCode } from '@nestjs/common';
 import { METHOD_METADATA } from '@nestjs/common/constants';
 import { RequestMethod } from '@nestjs/common/enums/request-method.enum';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOperation, ApiResponse } from '@teamhive/nestjs-swagger';
+import {
+    ApiBadRequestResponse,
+    ApiBearerAuth,
+    ApiHeaders,
+    ApiInternalServerErrorResponse,
+    ApiNotFoundResponse,
+    ApiOperation,
+    ApiResponse
+    } from '@teamhive/nestjs-swagger';
 import { HiveApiDocConfig } from '../../interfaces';
 
 export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {
@@ -45,6 +53,11 @@ export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {
         // Add Not Found Response - dynamically added based IsUnauthenticated Decorator
         if (requiresAuth) {
             ApiBearerAuth()(target, propertyKey, descriptor);
+        }
+
+         // Add the ApiHeaders if supplied
+        if (options.headers?.length > 0) {
+            ApiHeaders(options.headers)(target, propertyKey, descriptor);
         }
 
     };
