@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Logger } from 'log4js';
 import * as Raven from 'raven';
 import { ApplicationTokens } from '../../application-tokens.const';
-import { Breadcrum } from '../../interfaces/breadcrum.interface';
 import { RAVEN_DISPLAY_LIMIT } from '../../constants';
+import { Breadcrum } from '../../interfaces/breadcrum.interface';
 
 @Injectable()
 export class ErrorHandler {
@@ -18,7 +18,7 @@ export class ErrorHandler {
             Raven.captureBreadcrumb(breadcrumb);
         }
         else {
-            this.logger.info(breadcrumb.message);
+            this.logger.info(breadcrumb.message, breadcrumb.data ? breadcrumb.data : '');
         }
     }
 
