@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as config from 'config';
+import { getConfig } from '@teamhive/node-common';
 import * as EventEmitter from 'events';
 import * as redis from 'redis';
 import { ApplicationTokens } from '../../application-tokens.const';
@@ -20,15 +20,12 @@ export class RedisClient extends EventEmitter {
 
         // setup config
         try {
-            this.redisConfig = config.get<object>('redis');
-        }
-        catch (error) {
+            this.redisConfig = getConfig<object>('redis');
+        } catch (error) {
             // tslint:disable-next-line:no-console
             console.warn('You need to create a config for redis. See the README in @teamhive/nestjs-common');
             this.redisConfig = {
                 host: 'localhost',
-                keyPrefix: 'app_',
-                expiration: 86400000
             };
         }
 
@@ -67,7 +64,7 @@ export class RedisClient extends EventEmitter {
             // is trying to reconnect are immediately sent an error, instead of waiting for
             // reconnect and holding up the response to the end user
             enable_offline_queue: false,
-            ...this.redisConfig
+            ...this.redisConfig,
         });
 
         this.emitClientEvents(client);
@@ -82,7 +79,7 @@ export class RedisClient extends EventEmitter {
      * @param client
      */
     private emitClientEvents(client: redis.RedisClient) {
-        client.on('error', (error) => this.emit('error', error));
+        client.on('error', error => this.emit('error', error));
         client.on('ready', () => this.emit('ready'));
         client.on('reconnecting', () => this.emit('reconnecting'));
         client.on('end', () => this.emit('end'));
@@ -102,5 +99,5 @@ export class RedisClient extends EventEmitter {
 
 export const RedisProvider = {
     provide: ApplicationTokens.RedisClientToken,
-    useClass: RedisClient
+    useClass: RedisClient,
 };
