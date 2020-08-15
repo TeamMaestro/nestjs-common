@@ -1,55 +1,40 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Logger } from 'log4js';
+import { Injectable } from '@nestjs/common';
+import * as log from 'log4js';
 import * as Raven from 'raven';
-import { ApplicationTokens } from '../../application-tokens.const';
 import { RAVEN_DISPLAY_LIMIT } from '../../constants';
 import { Breadcrum } from '../../interfaces/breadcrum.interface';
 
+const logger = log.getLogger('error-handler');
+
 @Injectable()
 export class ErrorHandler {
-
-    constructor(
-        @Inject(ApplicationTokens.LoggerToken)
-        private readonly logger: Logger
-    ) {}
-
     captureBreadcrumb(breadcrumb: Breadcrum) {
-        if (process.env.DEPLOYMENT) {
-            Raven.captureBreadcrumb(breadcrumb);
-        }
-        else {
-            this.logger.info(breadcrumb.message, breadcrumb.data ? breadcrumb.data : '');
-        }
+        logger.info(breadcrumb.message, breadcrumb.data ? breadcrumb.data : '');
+        Raven.captureBreadcrumb(breadcrumb);
     }
 
     captureException(error: Error) {
-        if (process.env.DEPLOYMENT) {
-            if (this.sizeInBites(error) > RAVEN_DISPLAY_LIMIT) {
-                this.captureMessage(`Error with message "${error.message}" is too large and will not have all data displayed.`);
-            }
+        logger.error(error);
+        if (this.sizeInBites(error) > RAVEN_DISPLAY_LIMIT) {
+            this.captureMessage(
+                `Error with message "${error.message}" is too large and will not have all data displayed.`
+            );
+        }
 
-            Raven.captureException(error, (e: any) => {
-                if (e) {
-                    this.logger.error(e);
-                }
-            });
-        }
-        else {
-            this.logger.error(error);
-        }
+        Raven.captureException(error, (e: any) => {
+            if (e) {
+                logger.error(e);
+            }
+        });
     }
 
     captureMessage(message: string) {
-        if (process.env.DEPLOYMENT) {
-            Raven.captureMessage(message, (e: any) => {
-                if (e) {
-                    this.logger.error(e);
-                }
-            });
-        }
-        else {
-            this.logger.info(message);
-        }
+        logger.info(message);
+        Raven.captureMessage(message, (e: any) => {
+            if (e) {
+                logger.error(e);
+            }
+        });
     }
 
     private sizeInBites(object: any) {
@@ -62,16 +47,13 @@ export class ErrorHandler {
 
             if (typeof value === 'boolean') {
                 bytes += 4;
-            }
-            else if (typeof value === 'string') {
+            } else if (typeof value === 'string') {
                 bytes += value.length * 2;
-            }
-            else if (typeof value === 'number') {
+            } else if (typeof value === 'number') {
                 bytes += 8;
-            }
-            else if (typeof value === 'object' && value !== null) {
+            } else if (typeof value === 'object' && value !== null) {
                 objectList.push(value);
-                Object.getOwnPropertyNames(value).forEach((key) => stack.push(value[key]));
+                Object.getOwnPropertyNames(value).forEach(key => stack.push(value[key]));
             }
         }
         return bytes;
