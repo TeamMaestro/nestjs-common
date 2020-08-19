@@ -15,6 +15,11 @@ export class Pagination {
     @IsOptional()
     size: number;
 
+    @HiveApiModelProperty(`The number of results to shift the offset by`)
+    @IsNumber()
+    @IsOptional()
+    shift: number;
+
     @HiveApiModelProperty(`Property to sort by`)
     @IsString()
     @IsOptional()
@@ -37,12 +42,19 @@ export class Pagination {
 
         options.page = (options.page === undefined) ? 0 : +options.page;
         options.size = (options.size === undefined) ? 10 : +options.size;
+        options.shift = (options.shift === undefined) ? 0 : +options.shift;
 
         // If size or page is -1, then leave these undefined
         if (Number(options.size) >= 0 && Number(options.page) >= 0) {
             this.page = options.page;
             this.size = options.size;
-            this.offset = this.page * this.size;
+            this.shift = options.shift;
+            this.offset = (this.page * this.size) + this.shift;
+
+            // if offset less than 0 due to shift, set to zero
+            if (this.offset < 0) {
+                this.offset = 0;
+            }
         }
         this.sortBy = options.sortBy || defaultSortBy;
         this.sortDir = options.sortDir || Pagination.defaultSortDir;

@@ -3,6 +3,7 @@ import { SortDirection } from '../types';
 export interface PaginationOptions {
     page?: number;
     size?: number;
+    shift?: number;
     sortByModel?: any;
     sortBy?: string;
     sortDir?: SortDirection;
