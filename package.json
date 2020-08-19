@@ -37,6 +37,7 @@
         "@nestjs/testing": "^7.0",
         "@nestjs/microservices": "^7.0",
         "@teamhive/nestjs-swagger": "^4.6.0",
+        "@teamhive/node-common": "^3.0.0-alpha.1",
         "class-validator": "^0.12.2",
         "config": "^3.2",
         "js-yaml": "^3.13",
@@ -52,6 +53,7 @@
         "@nestjs/passport": "^7.0",
         "@nestjs/testing": "^7.0",
         "@teamhive/nestjs-swagger": "^4.6.0",
+        "@teamhive/node-common": "^3.0.0-alpha.1",
         "@types/bluebird": "^3.5.27",
         "@types/config": "^0.0",
         "@types/node": "^12.12.38",
@@ -69,7 +71,6 @@
         "typescript": "^3.7"
     },
     "dependencies": {
-        "@teamhive/node-common": "^2.0.0",
         "bluebird": "^3.5.5",
         "raven": "^2.6",
         "redis": "^2.8"

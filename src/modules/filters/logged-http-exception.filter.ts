@@ -16,12 +16,7 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
         // get the original exception if it was caught more than once
         exception = this.getInitialException(exception) as LoggedException;
 
-        // handle stack traces
-        if (exception.error) {
-            this.errorHandler.captureException(exception.error);
-        } else {
-            this.errorHandler.captureException(exception);
-        }
+        this.errorHandler.captureException(exception);
 
         // determine the context type
         const contextType = this.getHostContextType(host);

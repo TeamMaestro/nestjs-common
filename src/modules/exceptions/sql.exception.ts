@@ -10,5 +10,8 @@ export class SqlException extends LoggedException {
             HttpStatus.INTERNAL_SERVER_ERROR,
             new SqlExceptionError(error)
         );
+        this.loggedMetadata = {
+            sql: error.sql
+        };
     }
 }

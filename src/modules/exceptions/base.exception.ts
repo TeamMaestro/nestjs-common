@@ -7,6 +7,8 @@ export class BaseException extends HttpException {
 
     error: Error;
 
+    loggedMetadata: any;
+
     constructor(response: string | object, status: number, error?: Error) {
         super(response, status);
         this.error = error;
