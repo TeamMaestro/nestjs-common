@@ -11,7 +11,13 @@ export class SqlException extends LoggedException {
             new SqlExceptionError(error)
         );
         this.loggedMetadata = {
-            sql: error.sql
+            sql: error.sql,
         };
+        if (error.original) {
+            this.loggedMetadata.original = {
+                message: error.original.message,
+                detail: error.original.detail
+            };
+        }
     }
 }
