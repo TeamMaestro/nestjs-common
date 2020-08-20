@@ -24,7 +24,7 @@ export class ErrorHandler {
         StaticErrorHandlerService.captureMessage(message, this.logger);
     }
 
-    sanitizeError(error) {
+    sanitizeError(error: Error) {
         const sanitizeException = getConfig('logger.sanitizeException', true);
         if (!sanitizeException) {
             return error;
@@ -37,16 +37,19 @@ export class ErrorHandler {
         if (error instanceof BaseException) {
             const exception = error;
             const subError = exception.error;
-            message = exception.message;
             if (subError) {
-                name = subError.name;
+                name = subError.name !== 'Error' ? subError.name : undefined;
                 stack = subError.stack;
+                message = subError.message;
             }
             if (!name) {
-                name = exception.name;
+                name = exception.name !== 'Error' ? exception.name : undefined;
             }
             if (!stack) {
                 stack = exception.stack;
+            }
+            if (!message) {
+                message = exception.message;
             }
             prototype = Object.getPrototypeOf(exception);
             loggedMetadata = exception.loggedMetadata;
@@ -58,7 +61,12 @@ export class ErrorHandler {
             prototype = Object.getPrototypeOf(error);
         }
         const sanitizedError = new Error(message);
-        sanitizedError.name = name;
+        if (name) {
+            sanitizedError.name = name;
+        }
+        else {
+            delete sanitizedError.name;
+        }
         sanitizedError.stack = stack;
         sanitizedError.message = message;
         (sanitizedError as any).loggedMetadata = loggedMetadata;
