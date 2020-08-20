@@ -61,16 +61,21 @@ export class ErrorHandler {
             prototype = Object.getPrototypeOf(error);
         }
         const sanitizedError = new Error(message);
-        if (name) {
-            sanitizedError.name = name;
-        }
-        else {
-            delete sanitizedError.name;
-        }
         sanitizedError.stack = stack;
         sanitizedError.message = message;
         (sanitizedError as any).loggedMetadata = loggedMetadata;
         (sanitizedError as any).__proto__ = prototype;
+
+        // if there isn't a specific name given, clear the name so the constructor name is used
+        if (name) {
+            sanitizedError.name = name;
+        }
+        else {
+            // clear the name on the object
+            sanitizedError.name = undefined;
+            // remove the key from the error
+            delete sanitizedError.name;
+        }
         return sanitizedError;
     }
 }
