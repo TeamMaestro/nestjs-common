@@ -9,7 +9,7 @@ export class ValidationPipe implements PipeTransform<any> {
 
     async transform(value, metadata: ArgumentMetadata) {
         const { metatype, data, } = metadata;
-        if (!metatype || !this.toValidate(metatype)) {
+        if (!metatype || (!this.toValidate(metatype) && !(value instanceof ConstructedObject))) {
             return value;
         }
         // if the parameter is an injected metadata parameter
