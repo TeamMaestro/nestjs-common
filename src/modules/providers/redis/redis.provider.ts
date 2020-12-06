@@ -1,33 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { getConfig } from '@teamhive/node-common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as EventEmitter from 'events';
 import * as redis from 'redis';
 import { ApplicationTokens } from '../../application-tokens.const';
+import { RedisConfigurationOptions, RedisConfigurationToken } from '../redis-configuration/redis-configuration.provider';
 
 @Injectable()
 export class RedisClient extends EventEmitter {
     connection: redis.RedisClient;
 
-    private redisConfig: any;
     private pingRate: number;
     private maxTotalRetryTime: number;
 
-    constructor() {
+    constructor(
+        @Inject(RedisConfigurationToken)
+        private readonly redisConfiguration: RedisConfigurationOptions
+    ) {
         super();
 
         this.pingRate = 60000; // in ms
         this.maxTotalRetryTime = 10000; // in ms
-
-        // setup config
-        try {
-            this.redisConfig = getConfig<object>('redis');
-        } catch (error) {
-            // tslint:disable-next-line:no-console
-            console.warn('You need to create a config for redis. See the README in @teamhive/nestjs-common');
-            this.redisConfig = {
-                host: 'localhost',
-            };
-        }
 
         // create the initial client connection
         this.connection = this.setupClient();
@@ -64,7 +55,7 @@ export class RedisClient extends EventEmitter {
             // is trying to reconnect are immediately sent an error, instead of waiting for
             // reconnect and holding up the response to the end user
             enable_offline_queue: false,
-            ...this.redisConfig,
+            ...this.redisConfiguration
         });
 
         this.emitClientEvents(client);
@@ -99,5 +90,5 @@ export class RedisClient extends EventEmitter {
 
 export const RedisProvider = {
     provide: ApplicationTokens.RedisClientToken,
-    useClass: RedisClient,
+    useClass: RedisClient
 };

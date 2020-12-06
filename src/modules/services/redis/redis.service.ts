@@ -1,18 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { getConfig } from '@teamhive/node-common';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { RedisException } from '../../exceptions/redis.exception';
 import { RedisClient } from '../../providers';
+import { RedisConfigurationOptions, RedisConfigurationToken } from '../../providers/redis-configuration/redis-configuration.provider';
 import { ErrorHandler } from '../error-handler';
 
 @Injectable()
 export class RedisService {
     private keyPrefix: string;
-    private defaultExpiration = getConfig<number>('redis.expiration', 86400);
+    private defaultExpiration: number;
 
     constructor(
         @Inject(ApplicationTokens.RedisClientToken)
         private readonly client: RedisClient,
+        @Inject(RedisConfigurationToken)
+        private readonly redisConfiguration: RedisConfigurationOptions,
 
         private readonly errorHandler: ErrorHandler
     ) {
@@ -27,7 +29,8 @@ export class RedisService {
         );
         // tslint:enable
 
-        this.keyPrefix = getConfig<string>('redis.keyPrefix', '');
+        this.defaultExpiration = this.redisConfiguration.expiration ?? 86400;
+        this.keyPrefix = this.redisConfiguration.keyPrefix ?? '';
     }
 
     getValue(key: string) {
