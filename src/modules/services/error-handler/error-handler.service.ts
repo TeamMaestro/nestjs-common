@@ -14,15 +14,17 @@ export class ErrorHandler {
         @Optional()
         private readonly errorHandlerConfiguration?: StaticErrorHandlerConfiguration
     ) {
-        if (!errorHandlerConfiguration) {
-            this.errorHandlerConfiguration = {
+        this.errorHandlerConfiguration = Object.assign(
+            {}, 
+            {
                 sanitizeException: true,
                 sanitizeStack: {
                     enabled: true,
                     length: 10000
                 }
-            };
-        }
+            }, 
+            errorHandlerConfiguration ?? {}
+        );
     }
 
     captureBreadcrumb(breadcrumb: Breadcrum) {
