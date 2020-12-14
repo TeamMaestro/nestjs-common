@@ -37,7 +37,7 @@
         "@nestjs/testing": "^7.0",
         "@nestjs/microservices": "^7.0",
         "@teamhive/nestjs-swagger": "^4.6.0",
-        "@teamhive/node-common": "^3.0.0-alpha.1",
+        "@teamhive/node-common": "^3.0.0-alpha.5",
         "class-validator": "^0.12.2",
         "config": "^3.2",
         "js-yaml": "^3.13",
