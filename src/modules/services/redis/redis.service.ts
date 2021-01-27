@@ -33,9 +33,9 @@ export class RedisService {
         this.keyPrefix = this.redisConfiguration.keyPrefix ?? '';
     }
 
-    getValue(key: string) {
+    getValue(key: string, ignorePrefix?: boolean) {
         return new Promise<any>((resolve, reject) => {
-            this.client.connection.get(`${this.keyPrefix}${key}`, async (error, response) => {
+            this.client.connection.get(`${ignorePrefix ? '' : this.keyPrefix}${key}`, async (error, response) => {
                 if (error) {
                     return reject(error);
                 }
@@ -52,11 +52,11 @@ export class RedisService {
         });
     }
 
-    setValue(key: string, value: any, duration: number = this.defaultExpiration) {
+    setValue(key: string, value: any, duration: number = this.defaultExpiration, ignorePrefix?: boolean) {
         return new Promise<any>((resolve, reject) => {
             if (duration > 0) {
                 this.client.connection.set(
-                    `${this.keyPrefix}${key}`,
+                    `${ignorePrefix ? '' : this.keyPrefix}${key}`,
                     JSON.stringify(value),
                     'EX',
                     duration,
@@ -78,9 +78,9 @@ export class RedisService {
         });
     }
 
-    async delete(key: string | string[]) {
+    async delete(key: string | string[], ignorePrefix?: boolean) {
         if (Array.isArray(key)) {
-            key = key.map(individualKey => this.keyPrefix + individualKey);
+            key = key.map(individualKey => ignorePrefix ? '' : this.keyPrefix + individualKey);
         } else {
             key = `${this.keyPrefix}${key}`;
         }
@@ -91,9 +91,9 @@ export class RedisService {
         }
     }
 
-    async getKeys(pattern: string) {
+    async getKeys(pattern: string, ignorePrefix?: boolean) {
         return new Promise<string[]>((resolve, reject) => {
-            this.client.connection.keys(`${this.keyPrefix}${pattern}`, (err, keys) => {
+            this.client.connection.keys(`${ignorePrefix ? '' : this.keyPrefix}${pattern}`, (err, keys) => {
                 if (err) {
                     reject(err)
                 } else {
