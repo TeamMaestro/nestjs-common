@@ -92,7 +92,7 @@ export class RedisService {
     }
 
     async getKeys(pattern: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<string[]>((resolve, reject) => {
             this.client.connection.keys(pattern, (err, keys) => {
                 if (err) {
                     reject(err)
