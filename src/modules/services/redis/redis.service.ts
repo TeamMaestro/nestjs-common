@@ -68,7 +68,7 @@ export class RedisService {
                     }
                 );
             } else {
-                this.client.connection.set(`${this.keyPrefix}${key}`, JSON.stringify(value), (err, response) => {
+                this.client.connection.set(`${ignorePrefix ? '' : this.keyPrefix}${key}`, JSON.stringify(value), (err, response) => {
                     if (err) {
                         return reject(err);
                     }
@@ -82,7 +82,7 @@ export class RedisService {
         if (Array.isArray(key)) {
             key = key.map(individualKey => ignorePrefix ? '' : this.keyPrefix + individualKey);
         } else {
-            key = `${this.keyPrefix}${key}`;
+            key = `${ignorePrefix ? '' : this.keyPrefix}${key}`;
         }
         try {
             await this.client.connection.del(key);
