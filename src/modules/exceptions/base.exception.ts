@@ -5,6 +5,10 @@ export class BaseException extends HttpException {
         [key: string]: any;
     };
 
+    tags: {
+        [key: string]: number | string | boolean | bigint | symbol | null | undefined;
+    };
+
     error: Error;
 
     loggedMetadata: any;
