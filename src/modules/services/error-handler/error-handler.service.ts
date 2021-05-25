@@ -31,7 +31,7 @@ export class ErrorHandler {
     }
 
     captureException(error: Error) {
-        StaticErrorHandlerService.captureException(error, this.logger, this.errorHandlerConfiguration);
+        return StaticErrorHandlerService.captureException(error, this.logger, this.errorHandlerConfiguration);
     }
 
     captureMessage(message: string) {
