@@ -5,11 +5,7 @@ export type ErrorHandlerConfigurationOptions = StaticErrorHandlerConfiguration;
 export const ErrorHandlerConfigurationToken = 'teamhive:nestjs:ErrorHandlerConfigurationToken';
 
 export function getErrorHandlerConfigurationProvider(optionsFactory: () => ErrorHandlerConfigurationOptions = () => ({
-    sanitizeException: true,
-    sanitizeStack: {
-        enabled: true,
-        length: 10000
-    }
+    useSentry: true
 })): FactoryProvider {
     return {
         provide: ErrorHandlerConfigurationToken,
