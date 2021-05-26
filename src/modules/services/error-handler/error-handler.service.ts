@@ -16,18 +16,14 @@ export class ErrorHandler {
         this.errorHandlerConfiguration = Object.assign(
             {}, 
             {
-                sanitizeException: true,
-                sanitizeStack: {
-                    enabled: true,
-                    length: 10000
-                }
+                useSentry: true
             }, 
             errorHandlerConfiguration ?? {}
         );
     }
 
     captureBreadcrumb(breadcrumb: Breadcrum) {
-        StaticErrorHandlerService.captureBreadcrumb(breadcrumb, this.logger);
+        StaticErrorHandlerService.captureBreadcrumb(breadcrumb, this.logger, this.errorHandlerConfiguration);
     }
 
     captureException(error: Error) {
@@ -35,6 +31,6 @@ export class ErrorHandler {
     }
 
     captureMessage(message: string) {
-        StaticErrorHandlerService.captureMessage(message, this.logger);
+        StaticErrorHandlerService.captureMessage(message, this.logger, this.errorHandlerConfiguration);
     }
 }
