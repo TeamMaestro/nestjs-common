@@ -4,6 +4,8 @@ import { empty } from 'rxjs';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 import { LoggedException } from '../exceptions/logged.exception';
 import { ErrorHandler } from '../services/error-handler/error-handler.service';
+import beeline = require('@teamhive/honeycomb-beeline');
+
 @Catch(LoggedException)
 export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
     constructor(
@@ -16,7 +18,15 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
         // get the original exception if it was caught more than once
         exception = this.getInitialException(exception) as LoggedException;
 
-        this.errorHandler.captureException(exception);
+        const sentryId = this.errorHandler.captureException(exception);
+
+        if (beeline) {
+            beeline.addTraceContext({
+                'error.sentryId': sentryId,
+                'error.name': Object.getPrototypeOf(exception)?.constructor?.name,
+                'error.message': exception.message
+            })
+        }
 
         // determine the context type
         const contextType = this.getHostContextType(host);
