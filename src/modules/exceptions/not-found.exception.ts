@@ -7,5 +7,7 @@ export class NotFoundException extends PassiveException {
             message || 'Item not found',
             HttpStatus.NOT_FOUND
         );
+
+        this.name = 'ForbiddenException';
     }
 }

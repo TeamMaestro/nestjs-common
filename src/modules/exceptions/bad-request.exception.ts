@@ -7,5 +7,7 @@ export class BadRequestException extends PassiveException {
             message || 'Bad Request',
             HttpStatus.BAD_REQUEST
         );
+
+        this.name = 'BadRequestException';
     }
 }

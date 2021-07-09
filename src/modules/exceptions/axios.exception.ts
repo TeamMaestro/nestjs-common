@@ -10,5 +10,7 @@ export class AxiosException extends LoggedException {
             HttpStatus.INTERNAL_SERVER_ERROR,
             new AxiosExceptionError(error)
         );
+
+        this.name = 'AxiosException';
     }
 }

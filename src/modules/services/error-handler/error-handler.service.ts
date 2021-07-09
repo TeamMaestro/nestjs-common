@@ -30,7 +30,9 @@ export class ErrorHandler {
         return StaticErrorHandlerService.captureException(error, this.logger, this.errorHandlerConfiguration);
     }
 
-    captureMessage(message: string) {
+    captureMessage(message: string, tags?: {
+        [key: string]: string
+    }) {
         StaticErrorHandlerService.captureMessage(message, this.logger, this.errorHandlerConfiguration);
     }
 }

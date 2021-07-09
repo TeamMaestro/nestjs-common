@@ -8,5 +8,7 @@ export class RedisException extends LoggedException {
             HttpStatus.INTERNAL_SERVER_ERROR,
             error
         );
+
+        this.name = 'RedisException';
     }
 }
