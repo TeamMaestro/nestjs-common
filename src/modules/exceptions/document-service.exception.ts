@@ -9,5 +9,6 @@ export class DocumentServiceException extends LoggedException {
             HttpStatus.INTERNAL_SERVER_ERROR,
             new DocumentServiceExceptionError(error)
         );
+        this.name = 'DocumentServiceException';
     }
 }

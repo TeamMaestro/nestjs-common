@@ -7,5 +7,7 @@ export class ProcessingException extends PassiveException {
             message || 'Processing',
             HttpStatus.ACCEPTED
         );
+
+        this.name = 'ProcessingException';
     }
 }

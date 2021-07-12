@@ -7,5 +7,7 @@ export class ForbiddenException extends PassiveException {
             message,
             HttpStatus.FORBIDDEN
         );
+
+        this.name = 'ForbiddenException';
     }
 }

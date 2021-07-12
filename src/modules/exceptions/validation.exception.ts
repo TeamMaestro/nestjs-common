@@ -7,5 +7,9 @@ export class ValidationException extends LoggedException {
             message || 'Request format is invalid',
             HttpStatus.BAD_REQUEST
         );
+
+        this.tags.critical = 'false';
+
+        this.name = 'ValidationException';
     }
 }

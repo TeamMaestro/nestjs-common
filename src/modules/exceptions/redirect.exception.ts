@@ -10,5 +10,7 @@ export class RedirectException extends BaseException {
             HttpStatus.TEMPORARY_REDIRECT
         );
         this.redirectPath = redrectPath;
+
+        this.name = 'RedirectException';
     }
 }

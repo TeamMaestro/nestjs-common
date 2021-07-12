@@ -19,5 +19,7 @@ export class SqlException extends LoggedException {
                 detail: error.original.detail
             };
         }
+
+        this.name = 'SqlException';
     }
 }

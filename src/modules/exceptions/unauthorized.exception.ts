@@ -7,5 +7,7 @@ export class UnauthorizedException extends PassiveException {
             message || 'Unauthorized',
             HttpStatus.UNAUTHORIZED
         );
+
+        this.name = 'UnauthorizedException';
     }
 }

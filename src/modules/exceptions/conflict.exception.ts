@@ -8,5 +8,7 @@ export class ConflictException extends PassiveException {
             HttpStatus.CONFLICT,
             error
         );
+
+        this.name = 'ConflictException';
     }
 }
