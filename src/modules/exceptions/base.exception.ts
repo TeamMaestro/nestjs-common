@@ -16,5 +16,7 @@ export class BaseException extends HttpException {
     constructor(response: string | object, status: number, error?: Error) {
         super(response, status);
         this.error = error;
+        this.tags = {};
+        this.loggedMetadata = {};
     }
 }
