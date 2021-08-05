@@ -33,6 +33,6 @@ export class ErrorHandler {
     captureMessage(message: string, tags?: {
         [key: string]: string
     }) {
-        StaticErrorHandlerService.captureMessage(message, this.logger, this.errorHandlerConfiguration);
+        StaticErrorHandlerService.captureMessage(message, this.logger, this.errorHandlerConfiguration, tags);
     }
 }
