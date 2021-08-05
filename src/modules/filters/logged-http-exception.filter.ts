@@ -8,9 +8,7 @@ import beeline = require('@teamhive/honeycomb-beeline');
 
 @Catch(LoggedException)
 export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
-    constructor(
-        private readonly errorHandler: ErrorHandler
-    ) {
+    constructor(private readonly errorHandler: ErrorHandler) {
         super();
     }
 
@@ -25,7 +23,7 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
                 'error.sentryId': sentryId,
                 'error.name': Object.getPrototypeOf(exception)?.constructor?.name,
                 'error.message': exception.message
-            })
+            });
         }
 
         // determine the context type
@@ -38,7 +36,7 @@ export class LoggedHttpExceptionFilter extends BaseHttpExceptionFilter implement
             const statusCode = exception.getStatus() || 500;
             const exceptionResponse = {
                 statusCode,
-                appCode: HttpStatus[statusCode],
+                appCode: exception.appCode ?? HttpStatus[statusCode],
                 message: exception.getResponse(),
                 ...exception.customResponse
             };

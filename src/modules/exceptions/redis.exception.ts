@@ -3,12 +3,6 @@ import { LoggedException } from './logged.exception';
 
 export class RedisException extends LoggedException {
     constructor(error?: any) {
-        super(
-            'Internal server error with redis',
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            error
-        );
-
-        this.name = 'RedisException';
+        super('RedisException', 'Internal server error with redis', HttpStatus.INTERNAL_SERVER_ERROR, error);
     }
 }

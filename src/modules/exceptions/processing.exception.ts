@@ -3,11 +3,6 @@ import { PassiveException } from './passive.exception';
 
 export class ProcessingException extends PassiveException {
     constructor(message?: string) {
-        super(
-            message || 'Processing',
-            HttpStatus.ACCEPTED
-        );
-
-        this.name = 'ProcessingException';
+        super('ProcessingException', message || 'Processing', HttpStatus.ACCEPTED);
     }
 }

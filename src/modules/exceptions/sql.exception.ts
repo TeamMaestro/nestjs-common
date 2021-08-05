@@ -6,12 +6,13 @@ import { SequelizeError } from '../interfaces';
 export class SqlException extends LoggedException {
     constructor(error: SequelizeError, customMessage?: string) {
         super(
+            'SqlException',
             customMessage || 'Internal server error with database',
             HttpStatus.INTERNAL_SERVER_ERROR,
             new SqlExceptionError(error)
         );
         this.loggedMetadata = {
-            sql: error.sql,
+            sql: error.sql
         };
         if (error.original) {
             this.loggedMetadata.original = {
@@ -19,7 +20,5 @@ export class SqlException extends LoggedException {
                 detail: error.original.detail
             };
         }
-
-        this.name = 'SqlException';
     }
 }

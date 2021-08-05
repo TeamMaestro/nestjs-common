@@ -8,9 +8,7 @@ const ignoredHttpStatuses = [HttpStatus.NOT_FOUND, HttpStatus.FORBIDDEN, HttpSta
 
 @Catch()
 export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
-    constructor(
-        private readonly errorHandler: ErrorHandler
-    ) {
+    constructor(private readonly errorHandler: ErrorHandler) {
         super();
     }
 
@@ -35,21 +33,19 @@ export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements 
             let message;
             if (exception.message) {
                 message = exception.message.error || exception.message;
-            }
-            else {
+            } else {
                 message = 'There was an internal server error';
             }
 
             const exceptionResponse = {
                 statusCode,
-                appCode: HttpStatus[statusCode],
+                appCode: exception.appCode ?? HttpStatus[statusCode],
                 message,
                 ...exception.customResponse
             };
 
             res.status(statusCode).json(exceptionResponse);
-        }
-        else {
+        } else {
             return empty();
         }
     }

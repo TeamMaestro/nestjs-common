@@ -20,14 +20,13 @@ export class PassiveHttpExceptionFilter extends BaseHttpExceptionFilter implemen
             const statusCode = exception.getStatus() || 500;
             const exceptionResponse = {
                 statusCode,
-                appCode: HttpStatus[statusCode],
+                appCode: exception.appCode ?? HttpStatus[statusCode],
                 message: exception.getResponse(),
                 ...exception.customResponse
             };
 
             res.status(statusCode).json(exceptionResponse);
-        }
-        else {
+        } else {
             return empty();
         }
     }

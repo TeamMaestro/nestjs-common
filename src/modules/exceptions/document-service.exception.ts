@@ -5,10 +5,10 @@ import { DocumentServiceExceptionError } from '../classes/document-service-error
 export class DocumentServiceException extends LoggedException {
     constructor(error) {
         super(
+            'DocumentServiceException',
             'Internal Server Error - DMS',
             HttpStatus.INTERNAL_SERVER_ERROR,
             new DocumentServiceExceptionError(error)
         );
-        this.name = 'DocumentServiceException';
     }
 }

@@ -2,12 +2,16 @@ import { HttpStatus } from '@nestjs/common';
 import { PassiveException } from './passive.exception';
 
 export class ForbiddenException extends PassiveException {
-    constructor(message: string = 'Forbidden Action') {
-        super(
-            message,
-            HttpStatus.FORBIDDEN
-        );
+    constructor(
+        message: string = 'Forbidden Action',
+        options?: {
+            appCode?: string;
+        }
+    ) {
+        super('ForbiddenException', message, HttpStatus.FORBIDDEN);
 
-        this.name = 'ForbiddenException';
+        if (options?.appCode) {
+            this.appCode = options.appCode;
+        }
     }
 }
