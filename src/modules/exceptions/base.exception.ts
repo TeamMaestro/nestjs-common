@@ -1,4 +1,4 @@
-import { HttpException } from '@nestjs/common';
+import { HttpException } from "@nestjs/common";
 
 export class BaseException extends HttpException {
     customResponse: {
@@ -6,15 +6,31 @@ export class BaseException extends HttpException {
     };
 
     tags: {
-        [key: string]: number | string | boolean | bigint | symbol | null | undefined;
+        [key: string]:
+            | number
+            | string
+            | boolean
+            | bigint
+            | symbol
+            | null
+            | undefined;
     };
 
     error: Error;
 
     loggedMetadata: any;
 
-    constructor(response: string | object, status: number, error?: Error) {
+    // This will be exposed in responses by the Filters
+    appCode?: string;
+
+    constructor(
+        name: string,
+        response: string | object,
+        status: number,
+        error?: Error
+    ) {
         super(response, status);
+        this.name = name;
         this.error = error;
         this.tags = {};
         this.loggedMetadata = {};

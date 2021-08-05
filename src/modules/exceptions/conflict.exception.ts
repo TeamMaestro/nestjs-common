@@ -3,12 +3,6 @@ import { PassiveException } from './passive.exception';
 
 export class ConflictException extends PassiveException {
     constructor(error: any, conflictDescription: string) {
-        super(
-            conflictDescription,
-            HttpStatus.CONFLICT,
-            error
-        );
-
-        this.name = 'ConflictException';
+        super('ConflictException', conflictDescription, HttpStatus.CONFLICT, error);
     }
 }

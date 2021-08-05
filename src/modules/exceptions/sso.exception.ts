@@ -4,11 +4,10 @@ import { LoggedException } from './logged.exception';
 export class SsoException extends LoggedException {
     constructor(error?: Error, customMessage?: string) {
         super(
+            'SsoException',
             customMessage || 'Internal server error with SSO',
             HttpStatus.INTERNAL_SERVER_ERROR,
             error
         );
-
-        this.name = 'SsoException';
     }
 }

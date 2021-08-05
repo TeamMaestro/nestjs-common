@@ -2,12 +2,16 @@ import { HttpStatus } from '@nestjs/common';
 import { PassiveException } from './passive.exception';
 
 export class UnauthorizedException extends PassiveException {
-    constructor(message?: any) {
-        super(
-            message || 'Unauthorized',
-            HttpStatus.UNAUTHORIZED
-        );
+    constructor(
+        message?: any,
+        options?: {
+            appCode?: string;
+        }
+    ) {
+        super('UnauthorizedException', message || 'Unauthorized', HttpStatus.UNAUTHORIZED);
 
-        this.name = 'UnauthorizedException';
+        if (options?.appCode) {
+            this.appCode = options.appCode;
+        }
     }
 }

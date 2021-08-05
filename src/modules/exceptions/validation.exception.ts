@@ -2,14 +2,18 @@ import { HttpStatus } from '@nestjs/common';
 import { LoggedException } from './logged.exception';
 
 export class ValidationException extends LoggedException {
-    constructor(message?: string) {
-        super(
-            message || 'Request format is invalid',
-            HttpStatus.BAD_REQUEST
-        );
+    constructor(
+        message?: string,
+        options?: {
+            appCode?: string;
+        }
+    ) {
+        super('ValidationException', message || 'Request format is invalid', HttpStatus.BAD_REQUEST);
 
         this.tags.critical = 'false';
 
-        this.name = 'ValidationException';
+        if (options?.appCode) {
+            this.appCode = options.appCode;
+        }
     }
 }
