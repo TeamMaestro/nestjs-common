@@ -2,7 +2,12 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/commo
 import { Response } from 'express';
 import { BaseHttpExceptionFilter } from './base-http-exception.filter';
 
-const ignoredHttpStatuses = [HttpStatus.NOT_FOUND, HttpStatus.FORBIDDEN, HttpStatus.METHOD_NOT_ALLOWED];
+const ignoredHttpStatuses = [
+    HttpStatus.NOT_FOUND,
+    HttpStatus.FORBIDDEN,
+    HttpStatus.METHOD_NOT_ALLOWED,
+    HttpStatus.PAYLOAD_TOO_LARGE
+];
 
 @Catch()
 export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements ExceptionFilter {
