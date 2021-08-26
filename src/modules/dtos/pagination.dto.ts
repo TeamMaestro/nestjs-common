@@ -64,7 +64,11 @@ export class Pagination {
         const sortBy = [];
 
         if (this.sortByModel) {
-            sortBy.push([this.sortByModel, this.sortBy, this.sortDir]);
+            if (Array.isArray(this.sortByModel)) {
+                sortBy.push([...this.sortByModel, this.sortBy, this.sortDir]);
+            } else {
+                sortBy.push([this.sortByModel, this.sortBy, this.sortDir]);
+            }
         }
         else {
             sortBy.push([this.sortBy, this.sortDir]);
