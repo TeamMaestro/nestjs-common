@@ -35,6 +35,8 @@ export class Pagination {
     sortByModel: any;
     defaultSort: string;
 
+    secondarySort?: any;
+
     static defaultSortDir: SortDirection = 'DESC';
 
     constructor(defaultSortBy: string, options: PaginationOptions) {
@@ -63,6 +65,7 @@ export class Pagination {
     getOrderBy(options = {} as OrderBy) {
         const sortBy = [];
 
+        // primary sort
         if (this.sortByModel) {
             if (Array.isArray(this.sortByModel)) {
                 sortBy.push([...this.sortByModel, this.sortBy, this.sortDir]);
@@ -74,6 +77,12 @@ export class Pagination {
             sortBy.push([this.sortBy, this.sortDir]);
         }
 
+        //secondary sort
+        if (this.secondarySort){
+            sortBy.push(this.secondarySort);
+        }
+
+        // default sort by to ensure consistent pagination regardless of collisions
         if (options.sortById !== false) {
             const sortByKey = options.sortBy || 'id';
             sortBy.push([sortByKey, 'asc']);
