@@ -31,11 +31,11 @@
         "postpack": "rm *.d.ts && rm *.js && rm -Rf modules"
     },
     "peerDependencies": {
-        "@nestjs/common": "^7.0",
-        "@nestjs/core": "^7.0",
-        "@nestjs/microservices": "^7.0",
-        "@nestjs/passport": "^7.0",
-        "@nestjs/testing": "^7.0",
+        "@nestjs/common": "^8.0",
+        "@nestjs/core": "^8.0",
+        "@nestjs/microservices": "^8.0",
+        "@nestjs/passport": "^8.0",
+        "@nestjs/testing": "^8.0",
         "@teamhive/nestjs-swagger": "^4.6.0",
         "@teamhive/node-common": "^3.4.0",
         "class-validator": "^0.12.2",
@@ -47,11 +47,11 @@
         "rxjs": "^6.5"
     },
     "devDependencies": {
-        "@nestjs/common": "^7.0",
-        "@nestjs/core": "^7.0",
-        "@nestjs/microservices": "^7.0",
-        "@nestjs/passport": "^7.0",
-        "@nestjs/testing": "^7.0",
+        "@nestjs/common": "^8.0",
+        "@nestjs/core": "^8.0",
+        "@nestjs/microservices": "^8.0",
+        "@nestjs/passport": "^8.0",
+        "@nestjs/testing": "^8.0",
         "@teamhive/nestjs-swagger": "^4.6.0",
         "@teamhive/node-common": "3.4.0",
         "@types/bluebird": "^3.5.27",
@@ -68,7 +68,7 @@
         "reflect-metadata": "~0.1.13",
         "rxjs": "^6.5",
         "tslint": "^5.18",
-        "typescript": "^3.7"
+        "typescript": "^4.4"
     },
     "dependencies": {
         "@teamhive/honeycomb-beeline": "^2.8.0-beta.1",
