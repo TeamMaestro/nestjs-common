@@ -73,6 +73,6 @@
     "dependencies": {
         "bluebird": "^3.5.5",
         "raven": "^2.6",
-        "redis": "^2.8"
+        "redis": "^3.1"
     }
 }
