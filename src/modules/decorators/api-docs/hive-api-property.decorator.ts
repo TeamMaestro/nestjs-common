@@ -1,11 +1,8 @@
-import { ApiProperty, ApiPropertyOptions } from "@teamhive/nestjs-swagger";
-import { ValidationTypes } from "class-validator";
-import { getValidation } from "../../functions/get-validation.function";
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import { ValidationTypes } from 'class-validator';
+import { getValidation } from '../../functions/get-validation.function';
 
-export function HiveApiModelProperty(
-    description: string,
-    metadata: ApiPropertyOptions = {}
-): PropertyDecorator {
+export function HiveApiModelProperty(description: string, metadata: ApiPropertyOptions = {}): PropertyDecorator {
     return (target, propertyKey: string) => {
         const validations = getValidation(target.constructor, propertyKey);
 
@@ -16,7 +13,7 @@ export function HiveApiModelProperty(
 
         ApiProperty({
             description,
-            ...metadata,
+            ...metadata
         })(target, propertyKey);
     };
 }

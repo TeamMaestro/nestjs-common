@@ -1,9 +1,13 @@
 import { INestApplication } from '@nestjs/common';
-import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@teamhive/nestjs-swagger';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { writeJson } from './write-json.function';
 
-export async function setupSwaggerDocs(app: INestApplication, outputDirectory = process.cwd(), applicationName = 'API') {
+export async function setupSwaggerDocs(
+    app: INestApplication,
+    outputDirectory = process.cwd(),
+    applicationName = 'API'
+) {
     // Setup Swagger Documents
     const options = new DocumentBuilder()
         .setTitle(applicationName)
@@ -42,13 +46,15 @@ function processDocument(document: OpenAPIObject): OpenAPIObject {
             }
         }
     }
-    const sortedTags = Array.from(tags).sort((strA, strB) => {
-        const strANoAdmin = strA.replace('Admin - ', '');
-        const strBNoAdmin = strB.replace('Admin - ', '');
-        return strANoAdmin.localeCompare(strBNoAdmin, 'en');
-    }).map(tagName => ({
-         name: tagName
-    }));
+    const sortedTags = Array.from(tags)
+        .sort((strA, strB) => {
+            const strANoAdmin = strA.replace('Admin - ', '');
+            const strBNoAdmin = strB.replace('Admin - ', '');
+            return strANoAdmin.localeCompare(strBNoAdmin, 'en');
+        })
+        .map((tagName) => ({
+            name: tagName
+        }));
     document.tags = sortedTags;
 
     return document;

@@ -9,7 +9,7 @@ import {
     ApiNotFoundResponse,
     ApiOperation,
     ApiResponse
-    } from '@teamhive/nestjs-swagger';
+} from '@nestjs/swagger';
 import { HiveApiDocConfig } from '../../interfaces';
 
 export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {
@@ -17,10 +17,15 @@ export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {
         const method = RequestMethod[Reflect.getMetadata(METHOD_METADATA, descriptor.value)];
         const requiresAuth = !Reflect.getMetadata('isUnauthenticated', descriptor.value);
 
+        let apiDescription = `class ${target.constructor.name}.${propertyKey.toString()}`;
+        if (options.description) {
+            apiDescription += ` -- ${options.description}`;
+        }
+
         // Add ApiOperation Decorator
         ApiOperation({
             summary: options.summary,
-            description: options.description,
+            description: apiDescription,
             deprecated: options.deprecated || false
         })(target, propertyKey, descriptor);
 
@@ -47,7 +52,6 @@ export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {
             ApiBadRequestResponse({
                 description: 'Bad Request'
             })(target, propertyKey, descriptor);
-
         }
 
         // Add Not Found Response - dynamically added based IsUnauthenticated Decorator
@@ -55,10 +59,9 @@ export function HiveApiDocs(options: HiveApiDocConfig): MethodDecorator {
             ApiBearerAuth()(target, propertyKey, descriptor);
         }
 
-         // Add the ApiHeaders if supplied
+        // Add the ApiHeaders if supplied
         if (options.headers?.length > 0) {
             ApiHeaders(options.headers)(target, propertyKey, descriptor);
         }
-
     };
 }

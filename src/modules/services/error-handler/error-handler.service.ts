@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { StaticErrorHandlerConfiguration, StaticErrorHandlerService } from '@teamhive/node-common';
+import { StaticErrorHandlerConfiguration, StaticErrorHandlerService } from '@teammaestro/node-common';
 import { Logger } from 'log4js';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { Breadcrum } from '../../interfaces/breadcrum.interface';
@@ -14,10 +14,10 @@ export class ErrorHandler {
         private readonly errorHandlerConfiguration?: StaticErrorHandlerConfiguration
     ) {
         this.errorHandlerConfiguration = Object.assign(
-            {}, 
+            {},
             {
                 useSentry: true
-            }, 
+            },
             errorHandlerConfiguration ?? {}
         );
     }
@@ -30,9 +30,12 @@ export class ErrorHandler {
         return StaticErrorHandlerService.captureException(error, this.logger, this.errorHandlerConfiguration);
     }
 
-    captureMessage(message: string, tags?: {
-        [key: string]: string
-    }) {
+    captureMessage(
+        message: string,
+        tags?: {
+            [key: string]: string;
+        }
+    ) {
         StaticErrorHandlerService.captureMessage(message, this.logger, this.errorHandlerConfiguration, tags);
     }
 }

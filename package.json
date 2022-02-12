@@ -1,5 +1,5 @@
 {
-    "name": "@teamhive/nestjs-common",
+    "name": "@teammaestro/nestjs-common",
     "version": "18.0.0",
     "description": "Our common decorators, services, etc for NestJS projects",
     "keywords": [
@@ -9,18 +9,15 @@
     ],
     "main": "index.js",
     "typings": "index.d.ts",
-    "author": "TeamHive",
-    "contributors": [
-        "John Pinkster <jpinkster>"
-    ],
+    "author": "TeamMaestro",
     "license": "ISC",
-    "homepage": "https://github.com/TeamHive/nestjs-common",
+    "homepage": "https://github.com/TeamMaestro/nestjs-common",
     "repository": {
         "type": "git",
-        "url": "https://github.com/TeamHive/nestjs-common.git"
+        "url": "https://github.com/TeamMaestro/nestjs-common.git"
     },
     "bugs": {
-        "url": "https://github.com/TeamHive/nestjs-common/issues"
+        "url": "https://github.com/TeamMaestro/nestjs-common/issues"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -36,8 +33,8 @@
         "@nestjs/microservices": "^8.0",
         "@nestjs/passport": "^8.0",
         "@nestjs/testing": "^8.0",
-        "@teamhive/nestjs-swagger": "^4.6.0",
-        "@teamhive/node-common": "^4.0.0",
+        "@nestjs/swagger": "^4.6.0",
+        "@teammaestro/node-common": "^4.0.0",
         "class-validator": "^0.12.2",
         "config": "^3.2",
         "js-yaml": "^3.13",
@@ -52,8 +49,8 @@
         "@nestjs/microservices": "^8.0",
         "@nestjs/passport": "^8.0",
         "@nestjs/testing": "^8.0",
-        "@teamhive/nestjs-swagger": "^4.6.0",
-        "@teamhive/node-common": "4.0.0",
+        "@nestjs/swagger": "^4.6.0",
+        "@teammaestro/node-common": "4.0.0",
         "@types/bluebird": "^3.5.27",
         "@types/config": "^0.0",
         "@types/node": "^12.12.38",

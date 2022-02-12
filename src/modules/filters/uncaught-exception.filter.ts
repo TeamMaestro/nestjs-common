@@ -15,8 +15,6 @@ export class UncaughtExceptionFilter extends BaseHttpExceptionFilter implements 
         // get the original exception if it was caught more than once
         exception = this.getInitialException(exception);
 
-
-
         // determine the context type
         const contextType = this.getHostContextType(host);
 
