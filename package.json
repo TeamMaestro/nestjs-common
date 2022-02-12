@@ -38,7 +38,7 @@
         "class-validator": "^0.12.2",
         "config": "^3.2",
         "js-yaml": "^3.13",
-        "log4js": "^6.2",
+        "log4js": "^6.4",
         "passport": "~0.4.0",
         "reflect-metadata": "~0.1.13",
         "rxjs": "^6.5"
@@ -60,7 +60,7 @@
         "class-validator": "^0.12.2",
         "config": "^3.2",
         "js-yaml": "^3.13",
-        "log4js": "^6.2",
+        "log4js": "^6.4",
         "passport": "~0.4.0",
         "reflect-metadata": "~0.1.13",
         "rxjs": "^6.5",
