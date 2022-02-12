@@ -1,6 +1,6 @@
 {
     "name": "@teammaestro/nestjs-common",
-    "version": "18.0.0",
+    "version": "19.0.0",
     "description": "Our common decorators, services, etc for NestJS projects",
     "keywords": [
         "Typescript",
