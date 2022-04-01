@@ -10,8 +10,8 @@ export class PaginationSearch extends Pagination {
 
     searchTerm: string;
 
-    constructor(defaultSortBy: string, options: PaginationOptions) {
-        super(defaultSortBy, options);
+    constructor(options: PaginationOptions, defaultSortBy: string) {
+        super(options, defaultSortBy);
 
         this.searchTerm = options.search;
     }

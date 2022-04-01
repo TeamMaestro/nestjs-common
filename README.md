@@ -11,6 +11,10 @@ In this repo you will find a lot of the base shared code that we will user throu
 -   Validation Pipes
 -   Redis Service
 
+## Breaking change for v20.0.0
+
+We are flipping the `Pagination` constructor so that you can utilize this class directly with NestJs `@Query()` instead of requiring you create a class every time.
+
 ## Installation
 
 ```sh
@@ -225,7 +229,7 @@ export class UserFetchAllPgDto extends Pagination {
     filter: UserFetchAllFilter;
 
     constructor(pagination: PaginationOptions = {}) {
-        super('firstName', pagination);
+        super(pagination, 'firstName');
 
         try {
             this.filter = new UserFetchAllFilter(JSON.parse(decodeURI(pagination.filter)));

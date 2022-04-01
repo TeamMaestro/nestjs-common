@@ -39,19 +39,19 @@ export class Pagination {
 
     static defaultSortDir: SortDirection = 'DESC';
 
-    constructor(defaultSortBy: string, options: PaginationOptions) {
+    constructor(options: PaginationOptions, defaultSortBy: string) {
         this.defaultSort = defaultSortBy;
 
-        options.page = (options.page === undefined) ? 0 : +options.page;
-        options.size = (options.size === undefined) ? 10 : +options.size;
-        options.shift = (options.shift === undefined) ? 0 : +options.shift;
+        options.page = options.page === undefined ? 0 : +options.page;
+        options.size = options.size === undefined ? 10 : +options.size;
+        options.shift = options.shift === undefined ? 0 : +options.shift;
 
         // If size or page is -1, then leave these undefined
         if (Number(options.size) >= 0 && Number(options.page) >= 0) {
             this.page = options.page;
             this.size = options.size;
             this.shift = options.shift;
-            this.offset = (this.page * this.size) + this.shift;
+            this.offset = this.page * this.size + this.shift;
 
             // if offset less than 0 due to shift, set to zero
             if (this.offset < 0) {
@@ -72,13 +72,12 @@ export class Pagination {
             } else {
                 sortBy.push([this.sortByModel, this.sortBy, this.sortDir]);
             }
-        }
-        else {
+        } else {
             sortBy.push([this.sortBy, this.sortDir]);
         }
 
         //secondary sort
-        if (this.secondarySort){
+        if (this.secondarySort) {
             sortBy.push(this.secondarySort);
         }
 
