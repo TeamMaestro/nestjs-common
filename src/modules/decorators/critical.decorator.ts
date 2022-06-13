@@ -1,3 +1,3 @@
 import { SetMetadata } from '@nestjs/common';
 
-export const Critical = (critical: boolean) => SetMetadata('markedCritical', critical);
+export const Critical = (critical: boolean = true) => SetMetadata('markedCritical', critical);
