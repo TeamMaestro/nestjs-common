@@ -6,11 +6,12 @@ export class ValidationException extends LoggedException {
         message?: string,
         options?: {
             appCode?: string;
+            critical?: boolean;
         }
     ) {
         super('ValidationException', message || 'Request format is invalid', HttpStatus.BAD_REQUEST);
 
-        this.tags.critical = 'false';
+        this.tags.critical = !!options?.critical ? 'true' : 'false';
 
         if (options?.appCode) {
             this.appCode = options.appCode;

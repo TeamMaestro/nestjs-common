@@ -6,12 +6,14 @@ import { throwValidationErrors } from '../utility';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
-
     async transform(value, metadata: ArgumentMetadata) {
-        const { metatype, data, } = metadata;
+        const { metatype, data } = metadata;
         if (!metatype || (!this.toValidate(metatype) && !(value instanceof ConstructedObject))) {
             return value;
         }
+
+        const markedCritical = Reflect.getMetadata('markedCritical', value);
+
         // if the parameter is an injected metadata parameter
         if (data === DO_NOT_VALIDATE) {
             return value;
@@ -20,7 +22,7 @@ export class ValidationPipe implements PipeTransform<any> {
         const object = value instanceof ConstructedObject ? value.object : new metatype(value);
         const errors = await validate(object);
         if (errors.length > 0) {
-            throwValidationErrors(errors);
+            throwValidationErrors(errors, markedCritical);
         }
 
         // We will return the constructed class
