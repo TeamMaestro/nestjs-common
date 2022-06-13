@@ -12,7 +12,7 @@ export class ValidationPipe implements PipeTransform<any> {
             return value;
         }
 
-        const markedCritical = Reflect.getMetadata('markedCritical', value);
+        const markedCritical = Reflect.getMetadata('markedCritical', metatype);
 
         // if the parameter is an injected metadata parameter
         if (data === DO_NOT_VALIDATE) {
