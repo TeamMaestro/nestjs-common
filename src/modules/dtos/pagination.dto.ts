@@ -62,7 +62,7 @@ export class Pagination {
         this.sortDir = options.sortDir || Pagination.defaultSortDir;
     }
 
-    getOrderBy(options = {} as OrderBy) {
+    getOrderBy(options = {} as OrderByOptions) {
         const sortBy = [];
 
         // primary sort
@@ -91,7 +91,7 @@ export class Pagination {
     }
 }
 
-interface OrderBy {
+export interface OrderByOptions {
     sortById?: boolean;
     sortBy?: string;
 }
