@@ -16,9 +16,14 @@ export function PassportAuthGuard(strategyToken: string) {
             if (error || !user) {
                 // if the error is not an instance of our UnauthorizedException, then capture
                 if (!(error instanceof UnauthorizedException)) {
-                    const actualError = error ||
-                        (passportError instanceof Error) ? passportError : false ||
-                        new Error('Passport Error');
+                    let actualError = error;
+
+                    if (!actualError && passportError instanceof Error) {
+                        actualError = passportError;
+                    }
+                    if (!actualError) {
+                        actualError = new Error('Passport Error');
+                    }
 
                     // only handle (report to sentry) if not a whitelisted error
                     if (!this.isWhitelisted(actualError)) {
@@ -33,7 +38,7 @@ export function PassportAuthGuard(strategyToken: string) {
         }
 
         isWhitelisted(error = {} as Error) {
-            return Array.from(this.whitelistedErrors).some(whitelistedError => {
+            return Array.from(this.whitelistedErrors).some((whitelistedError) => {
                 if (typeof error.message === 'string') {
                     return error.message.includes(whitelistedError);
                 }
@@ -51,11 +56,11 @@ export function PassportAuthGuard(strategyToken: string) {
         }
 
         addToWhitelist(messages: string[]) {
-            messages.forEach(message => this.whitelistedErrors.add(message));
+            messages.forEach((message) => this.whitelistedErrors.add(message));
         }
 
         removeFromWhitelist(messages: PassportWhitelistedErrors[]) {
-            messages.forEach(message => this.whitelistedErrors.delete(String(message)));
+            messages.forEach((message) => this.whitelistedErrors.delete(String(message)));
         }
     };
 }
