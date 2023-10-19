@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as EventEmitter from 'events';
-import * as redis from 'redis';
+import { createClient } from 'redis';
 import { ApplicationTokens } from '../../application-tokens.const';
-import { RedisConfigurationOptions, RedisConfigurationToken } from '../redis-configuration/redis-configuration.provider';
+import { RedisConfigurationOptions, RedisConfigurationToken } from '../redis-configuration';
 
 @Injectable()
 export class RedisClient extends EventEmitter {
-    connection: redis.RedisClient;
+    connection: any;
 
     private pingRate: number;
     private maxTotalRetryTime: number;
@@ -33,34 +33,36 @@ export class RedisClient extends EventEmitter {
      * 3. Subscribe and emit the new connection's events
      * 4. Return the client
      */
-    setupClient() {
+    async setupClient() {
         // initial connection
         const self = this;
-        const client = redis.createClient({
-            retry_strategy(options: any) {
-                if (options.totalRetryTime > self.maxTotalRetryTime) {
-                    self.emit('error', new Error('Retry time exhausted, creating new client connection...'));
+        const client = createClient({
+            socket: {
+                reconnectStrategy: (options: any) => {
+                    if (options.totalRetryTime > self.maxTotalRetryTime) {
+                        self.emit('error', new Error('Retry time exhausted, creating new client connection...'));
 
-                    // cleanly end connection, then setup new client connection
-                    client.quit();
-                    self.connection = self.setupClient();
-                    return;
-                }
+                        // cleanly end connection, then setup new client connection
+                        client.quit();
+                        self.connection = self.setupClient();
+                        return;
+                    }
 
-                // gradually increase time between connection attempts
-                return Math.min(options.attempt * 100, 3000);
+                    // gradually increase time between connection attempts
+                    return Math.min(options.attempt * 100, 3000);
+                },
             },
 
             // default enable_offline_queue to false so that any requests made while client
             // is trying to reconnect are immediately sent an error, instead of waiting for
             // reconnect and holding up the response to the end user
-            enable_offline_queue: false,
+            disableOfflineQueue: true,
             ...this.redisConfiguration
         });
 
         this.emitClientEvents(client);
 
-        return client;
+        return await client.connect();
     }
 
     /**
@@ -69,7 +71,7 @@ export class RedisClient extends EventEmitter {
      * classes events, instead of resubscribing to every new connection created.
      * @param client
      */
-    private emitClientEvents(client: redis.RedisClient) {
+    private emitClientEvents(client: any) {
         client.on('error', error => this.emit('error', error));
         client.on('ready', () => this.emit('ready'));
         client.on('reconnecting', () => this.emit('reconnecting'));

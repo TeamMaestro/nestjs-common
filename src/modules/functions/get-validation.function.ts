@@ -4,7 +4,7 @@ import { getFromContainer, MetadataStorage, ValidationTypes } from 'class-valida
 export function getValidation(targetConstructor: Function, propertyKey: string): ValidationTypes[] {
     const validatorStorage: MetadataStorage = getFromContainer(MetadataStorage);
 
-    const targetValidationMetadata = validatorStorage.getTargetValidationMetadatas(targetConstructor, null, null);
+    const targetValidationMetadata = validatorStorage.getTargetValidationMetadatas(targetConstructor, null, null, false);
 
     const validationMetadata = validatorStorage.groupByPropertyName(targetValidationMetadata);
     if (validationMetadata) {

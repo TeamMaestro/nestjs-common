@@ -1,5 +1,5 @@
 import { FactoryProvider } from '@nestjs/common';
-import { StaticErrorHandlerConfiguration } from '@teammaestro/node-common';
+import { StaticErrorHandlerConfiguration } from '@gtindependence/node-common';
 
 export type ErrorHandlerConfigurationOptions = StaticErrorHandlerConfiguration;
 export const ErrorHandlerConfigurationToken = 'teamhive:nestjs:ErrorHandlerConfigurationToken';

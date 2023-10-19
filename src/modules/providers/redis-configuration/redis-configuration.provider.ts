@@ -1,11 +1,11 @@
 import { FactoryProvider } from '@nestjs/common';
-import { ClientOpts } from 'redis';
+import { RedisClientOptions } from '@redis/client';
 export const RedisConfigurationToken = 'teamhive:nestjs:RedisConfigurationToken';
 
-export type RedisConfigurationOptions = ClientOpts & {expiration?: number; keyPrefix?: string};
+export type RedisConfigurationOptions = RedisClientOptions & {expiration?: number; keyPrefix?: string};
 
 export function getRedisConfigurationProvider(optionsFactory: () => RedisConfigurationOptions = () => ({
-    host: 'localhost'
+    socket: { host: 'localhost' }
 })): FactoryProvider {
     return {
         provide: RedisConfigurationToken,

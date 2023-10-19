@@ -1,8 +1,8 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ClientOpts } from 'redis';
 import { RedisProvider } from '../providers';
-import { getRedisConfigurationProvider } from '../providers/redis-configuration/redis-configuration.provider';
+import { getRedisConfigurationProvider } from '../providers';
 import { RedisService } from '../services';
+import { RedisClientOptions } from '@redis/client';
 
 @Module({
     providers: [
@@ -15,7 +15,7 @@ import { RedisService } from '../services';
     ]
 })
 export class RedisModule {
-    static register(optionsFactory?: () => ClientOpts): DynamicModule {
+    static register(optionsFactory?: () => RedisClientOptions): DynamicModule {
         return {
             module: RedisModule,
             providers: [

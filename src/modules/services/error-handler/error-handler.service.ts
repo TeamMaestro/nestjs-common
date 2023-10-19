@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { StaticErrorHandlerConfiguration, StaticErrorHandlerService } from '@teammaestro/node-common';
+import { StaticErrorHandlerConfiguration, StaticErrorHandlerService } from '@gtindependence/node-common';
 import { Logger } from 'log4js';
 import { ApplicationTokens } from '../../application-tokens.const';
 import { Breadcrum } from '../../interfaces/breadcrum.interface';
